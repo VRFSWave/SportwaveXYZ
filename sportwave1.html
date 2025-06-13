@@ -24,23 +24,32 @@
       font-size: 1.8rem;
       margin: 0;
     }
-    .stream-container {
-      flex: 1;
+    .stream-wrapper {
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex: 1;
+      height: 100%;
       padding: 1rem;
+      box-sizing: border-box;
+    }
+    .player, .chat {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    .player {
+      flex: 3;
+      margin-right: 1rem;
+    }
+    .chat {
+      flex: 1.5;
     }
     iframe {
       width: 100%;
-      max-width: 1200px;
-      height: 70vh;
+      height: 80vh;
       border: none;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
     .back-link {
-      margin-top: 1rem;
+      margin: 1rem auto;
       text-align: center;
     }
     .back-link a {
@@ -51,6 +60,19 @@
     .back-link a:hover {
       text-decoration: underline;
     }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .stream-wrapper {
+        flex-direction: column;
+      }
+      .chat {
+        display: none;
+      }
+      .player {
+        margin-right: 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -59,13 +81,22 @@
     <h1>🎥 Watch Live on Twitch</h1>
   </header>
 
-  <div class="stream-container">
-    <iframe
-      src="https://player.twitch.tv/?channel=sportwavelive&parent=sportwave.xyz/sportwave1"
-      allowfullscreen
-      allow="autoplay; fullscreen"
-      scrolling="no">
-    </iframe>
+  <div class="stream-wrapper">
+    <div class="player">
+      <iframe
+        src="https://player.twitch.tv/?channel=sportwavelive&parent=www.sportwave.xyz"
+        allowfullscreen
+        allow="autoplay; fullscreen"
+        scrolling="no">
+      </iframe>
+    </div>
+    <div class="chat">
+      <iframe
+        src="https://www.twitch.tv/embed/sportwavelive/chat?parent=www.sportwave.xyz"
+        allowfullscreen
+        scrolling="no">
+      </iframe>
+    </div>
   </div>
 
   <div class="back-link">
