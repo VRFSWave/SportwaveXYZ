@@ -61,7 +61,7 @@
       text-decoration: underline;
     }
 
-    /* Responsive adjustments */
+    /* Responsive: hide chat on small screens */
     @media (max-width: 768px) {
       .stream-wrapper {
         flex-direction: column;
@@ -84,23 +84,21 @@
   <div class="stream-wrapper">
     <div class="player">
       <iframe
-        src="https://player.twitch.tv/?channel=sportwavelive&parent=www.sportwave.xyz"
+        src="https://player.twitch.tv/?channel=SportwaveLive&parent=www.sportwave.xyz"
         allowfullscreen
-        allow="autoplay; fullscreen"
-        scrolling="no">
+        allow="autoplay; fullscreen">
       </iframe>
     </div>
     <div class="chat">
       <iframe
-        src="https://www.twitch.tv/embed/sportwavelive/chat?parent=www.sportwave.xyz"
-        allowfullscreen
-        scrolling="no">
+        src="https://www.twitch.tv/embed/SportwaveLive/chat?parent=www.sportwave.xyz"
+        allowfullscreen>
       </iframe>
     </div>
   </div>
 
   <div class="back-link">
-    <a href="index.html">← Back to Events</a>
+    <a href="events.html">← Back to Events</a>
   </div>
 
 </body>
