@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Watch Live | Sportwave</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background-color: #111;
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 2px solid #333;
+    }
+    header h1 {
+      font-size: 1.8rem;
+      margin: 0;
+    }
+    .stream-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+    iframe {
+      width: 100%;
+      max-width: 1200px;
+      height: 70vh;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    .back-link {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .back-link a {
+      color: #0af;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎥 Watch Live on Twitch</h1>
+  </header>
+
+  <div class="stream-container">
+    <iframe
+      src="https://player.twitch.tv/?channel=sportwavelive&parent=https://www.sportwave.xyz"
+      allowfullscreen
+      allow="autoplay; fullscreen"
+      scrolling="no">
+    </iframe>
+  </div>
+
+  <div class="back-link">
+    <a href="events.html">← Back to Events</a>
+  </div>
+
+</body>
+</html>
