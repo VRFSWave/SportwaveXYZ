@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sportwave Live Events</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #000;
+      color: #fff;
+    }
+    h1 {
+      text-align: center;
+      padding: 1rem;
+      font-size: 2rem;
+      background-color: #111;
+      border-bottom: 2px solid #333;
+    }
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .event-card {
+      position: relative;
+      background: #1c1c1c;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      transition: transform 0.3s ease;
+    }
+    .event-card:hover {
+      transform: scale(1.03);
+    }
+    .event-thumb {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .event-overlay {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(5px);
+    }
+    .event-info {
+      padding: 1rem;
+    }
+    .event-league {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 0.5rem;
+    }
+    .event-league img {
+      height: 20px;
+      width: auto;
+      vertical-align: middle;
+    }
+    .event-time {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #f0f0f0;
+    }
+    .event-title {
+      font-size: 1.2rem;
+      margin: 0.3rem 0 0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>⚽ Sportwave Live Events</h1>
+  <div class="events-grid" id="events"></div>
+
+  <script>
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRxBCDipb1G3U7YmglB01b35zs6sHFspQhE2FYHzaUctuqvdZVMbNZTAY3kYoguMOZaKUsVhSly1K-J/pub?output=csv";
+
+    // Map leagues to logo URLs
+    const leagueLogos = {
+      "Premier League": "https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg",
+      "UEFA Champions League": "https://upload.wikimedia.org/wikipedia/en/6/68/UEFA_Champions_League_logo_2.svg",
+      "La Liga": "https://upload.wikimedia.org/wikipedia/en/1/13/LaLiga.svg",
+      "Serie A": "https://upload.wikimedia.org/wikipedia/en/e/e1/Serie_A_logo_%282019%29.svg",
+      "Bundesliga": "https://upload.wikimedia.org/wikipedia/commons/d/df/Bundesliga_logo_%282017%29.svg",
+      "VFA": "https://i.ibb.co/mF4rzT1x/vfatrans.png",
+      "VSL": "https://i.ibb.co/9k8zf6g8/vsl-logo.png",
+      "VWC": "https://i.ibb.co/rf0RgfBy/vwc-logo.png",
+      "VDL": "https://i.ibb.co/gFhtQLmp/image-removebg-preview-11.png",
+      "Ligue 1": "https://upload.wikimedia.org/wikipedia/en/f/f2/Ligue1.svg"
+      // Add more as needed
+    };
+
+    async function fetchEvents() {
+      const res = await fetch(csvUrl);
+      const text = await res.text();
+      const rows = text.trim().split("\n").slice(1);
+      const container = document.getElementById("events");
+
+      rows.forEach(row => {
+        const [time, title, league, category, thumbnail, link] = row.split(",");
+
+        const logo = leagueLogos[league] || ""; // fallback if no logo
+
+        const card = document.createElement("a");
+        card.href = link;
+        card.className = "event-card";
+        card.target = "_blank";
+        card.innerHTML = `
+          <img src="${thumbnail}" alt="${title}" class="event-thumb">
+          <div class="event-overlay">${category}</div>
+          <div class="event-info">
+            <div class="event-league">
+              ${logo ? `<img src="${logo}" alt="${league}">` : ""}
+              <span>${league}</span>
+            </div>
+            <div class="event-time">${time}</div>
+            <div class="event-title">${title}</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    fetchEvents();
+  </script>
+</body>
+</html>
