@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sportwave | Video Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    .back-link {
+      margin-bottom: 1rem;
+      display: inline-block;
+      color: #ccc;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: white;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin: 0.5rem 0;
+    }
+
+    .meta {
+      color: #aaa;
+      margin-bottom: 1rem;
+    }
+
+    iframe, .video-embed {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 12px;
+      background: #111;
+    }
+
+    .thumb-fallback {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-color: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      font-size: 1.2rem;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a class="back-link" href="/videos">← Back to Videos</a>
+    <div id="video-container"></div>
+    <h1 id="video-title"></h1>
+    <div class="meta" id="video-meta"></div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const title = params.get('title');
+    const league = params.get('league');
+    const type = params.get('type');
+    const date = params.get('date');
+    const link = params.get('link');
+
+    document.getElementById('video-title').textContent = title || 'Video';
+    document.getElementById('video-meta').textContent = `${league} • ${type} • ${date}`;
+
+    const container = document.getElementById('video-container');
+
+    if (link) {
+      let embed;
+      if (link.includes("youtube.com") || link.includes("youtu.be")) {
+        const youtubeId = link.includes("watch?v=")
+          ? new URL(link).searchParams.get("v")
+          : link.split("/").pop();
+        embed = `<iframe src="https://www.youtube.com/embed/${youtubeId}" allowfullscreen></iframe>`;
+      } else if (link.includes("twitch.tv")) {
+        const channel = link.split("/").pop();
+        embed = `<iframe src="https://player.twitch.tv/?channel=${channel}&parent=sportwave.xyz" allowfullscreen></iframe>`;
+      } else if (link.includes("sportwave.xyz") || link.includes("embed")) {
+        embed = `<iframe src="${link}" allowfullscreen></iframe>`;
+      } else {
+        embed = `<div class="thumb-fallback">No video embed available</div>`;
+      }
+
+      container.innerHTML = `<div class="video-embed">${embed}</div>`;
+    } else {
+      container.innerHTML = `<div class="thumb-fallback">No video link provided</div>`;
+    }
+  </script>
+</body>
+</html>
