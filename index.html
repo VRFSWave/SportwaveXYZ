@@ -1,183 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <!-- SEO & Link Previews -->
-  <title>Sportwave | Watch Live VR Football</title>
-  <meta name="description" content="Sportwave is your home for live VR football matches, replays, and highlights. Watch SportwaveLive on Twitch now.">
+    <meta charset="UTF-8">
+    <!-- SEO & Link Previews -->
+    <title>Sportwave | Watch Live VR Football</title>
+    <meta name="description" content="Sportwave is your home for live VR football matches, replays, and highlights. Watch SportwaveLive on Twitch now.">
 
-  <!-- Open Graph (Facebook, Discord, etc.) -->
-  <meta property="og:title" content="Sportwave | Watch Live VR Football">
-  <meta property="og:description" content="Watch SportwaveLive in action! VR football matches streaming live with chat and commentary.">
-  <meta property="og:image" content="https://i.ibb.co/9H1B1f4c/image.png">
-  <meta property="og:url" content="https://www.sportwave.xyz/">
-  <meta property="og:type" content="website">
+    <!-- Open Graph (Facebook, Discord, etc.) -->
+    <meta property="og:title" content="Sportwave | Watch Live VR Football">
+    <meta property="og:description" content="Watch SportwaveLive in action! VR football matches streaming live with chat and commentary.">
+    <meta property="og:image" content="https://i.ibb.co/9H1B1f4c/image.png">
+    <meta property="og:url" content="https://www.sportwave.xyz/">
+    <meta property="og:type" content="website">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #000;
-      color: #fff;
-    }
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
 
-    .hero {
-      position: relative;
-      width: 100%;
-      height: 320px;
-      background-image: url('https://i.ibb.co/1jCfFsq/image.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            background-image: url('https://i.ibb.co/1jCfFsq/image.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 0;
-    }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
 
+        .hero-text {
+            position: relative;
+            text-align: center;
+            z-index: 1;
+        }
 
+        .hero-text h2 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
 
-    h1 {
-      text-align: center;
-      padding: 1rem;
-      font-size: 2rem;
-      background-color: #111;
-      border-bottom: 2px solid #333;
-    }
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            color: #ddd;
+        }
 
-    .events-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
+        h1 {
+            text-align: center;
+            padding: 1rem;
+            font-size: 2rem;
+            background-color: #111;
+            border-bottom: 2px solid #333;
+        }
 
-    .event-card {
-      position: relative;
-      background: #1c1c1c;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      cursor: pointer;
-      text-decoration: none;
-      color: white;
-      transition: transform 0.3s ease;
-    }
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-    .event-card:hover {
-      transform: scale(1.03);
-    }
+        .event-card {
+            position: relative;
+            background: #1c1c1c;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s ease;
+        }
 
-    .event-thumb {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
+        .event-card:hover {
+            transform: scale(1.03);
+        }
 
-    .event-overlay {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 4px 10px;
-      font-size: 0.75rem;
-      border-radius: 6px;
-      text-transform: uppercase;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-      backdrop-filter: blur(5px);
-    }
+        .event-thumb {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
 
-    .event-info {
-      padding: 1rem;
-    }
+        .event-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(5px);
+        }
 
-    .event-league {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 0.5rem;
-    }
+        .event-info {
+            padding: 1rem;
+        }
 
-    .event-league img {
-      height: 20px;
-      width: auto;
-      vertical-align: middle;
-    }
+        .event-league {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0.5rem;
+        }
 
-    .event-time {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: #f0f0f0;
-    }
+        .event-league img {
+            height: 20px;
+            width: auto;
+            vertical-align: middle;
+        }
 
-    .event-title {
-      font-size: 1.2rem;
-      margin: 0.3rem 0 0;
-      font-weight: bold;
-    }
-  </style>
+        .event-time {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #f0f0f0;
+        }
+
+        .event-title {
+            font-size: 1.2rem;
+            margin: 0.3rem 0 0;
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
 
-  <!-- Hero Section -->
-  <div class="hero">
-    <div class="hero-text">
-      <h2>Watch Live VR Football</h2>
-      <p>Experience the future of football with Sportwave</p>
+    <!-- Hero Section -->
+    <div class="hero">
     </div>
-  </div>
 
-  <h1>⚽ Sportwave Live Events</h1>
-  <div class="events-grid" id="events"></div>
+    <h1>⚽ Sportwave Live Events</h1>
+    <div class="events-grid" id="events"></div>
 
-  <script>
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRxBCDipb1G3U7YmglB01b35zs6sHFspQhE2FYHzaUctuqvdZVMbNZTAY3kYoguMOZaKUsVhSly1K-J/pub?output=csv";
+    <script>
+        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRxBCDipb1G3U7YmglB01b35zs6sHFspQhE2FYHzaUctuqvdZVMbNZTAY3kYoguMOZaKUsVhSly1K-J/pub?output=csv";
 
-    const leagueLogos = {
-      "Premier League": "https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg",
-      "UEFA Champions League": "https://upload.wikimedia.org/wikipedia/en/6/68/UEFA_Champions_League_logo_2.svg",
-      "La Liga": "https://upload.wikimedia.org/wikipedia/en/1/13/LaLiga.svg",
-      "Serie A": "https://upload.wikimedia.org/wikipedia/en/e/e1/Serie_A_logo_%282019%29.svg",
-      "Bundesliga": "https://upload.wikimedia.org/wikipedia/commons/d/df/Bundesliga_logo_%282017%29.svg",
-      "VFA": "https://i.ibb.co/mF4rzT1x/vfatrans.png",
-      "VSL": "https://i.ibb.co/9k8zf6g8/vsl-logo.png",
-      "VWC": "https://i.ibb.co/rf0RgfBy/vwc-logo.png",
-      "VDL": "https://i.ibb.co/gFhtQLmp/image-removebg-preview-11.png",
-      "VRL": "https://i.ibb.co/R4YMBSYF/vrldownscaled.png",
-      "VFA UCL": "https://i.ibb.co/S4mZJrjK/Bazaart-20250505-072442-446.png",
-      "VFO": "https://i.ibb.co/5Xz8xYKs/Euros.png",
-      "VRML": "https://i.ibb.co/sdMK6rSN/vrml.png",
-      "Other": "https://i.ibb.co/TMXd8j03/VRFS-logo-on-a-ball.png",
-      "Ligue 1": "https://upload.wikimedia.org/wikipedia/en/f/f2/Ligue1.svg"
-    };
+        const leagueLogos = {
+            "Premier League": "https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg",
+            "UEFA Champions League": "https://upload.wikimedia.org/wikipedia/en/6/68/UEFA_Champions_League_logo_2.svg",
+            "La Liga": "https://upload.wikimedia.org/wikipedia/en/1/13/LaLiga.svg",
+            "Serie A": "https://upload.wikimedia.org/wikipedia/en/e/e1/Serie_A_logo_%282019%29.svg",
+            "Bundesliga": "https://upload.wikimedia.org/wikipedia/commons/d/df/Bundesliga_logo_%282017%29.svg",
+            "VFA": "https://i.ibb.co/mF4rzT1x/vfatrans.png",
+            "VSL": "https://i.ibb.co/9k8zf6g8/vsl-logo.png",
+            "VWC": "https://i.ibb.co/rf0RgfBy/vwc-logo.png",
+            "VDL": "https://i.ibb.co/gFhtQLmp/image-removebg-preview-11.png",
+            "VRL": "https://i.ibb.co/R4YMBSYF/vrldownscaled.png",
+            "VFA UCL": "https://i.ibb.co/S4mZJrjK/Bazaart-20250505-072442-446.png",
+            "VFO": "https://i.ibb.co/5Xz8xYKs/Euros.png",
+            "VRML": "https://i.ibb.co/sdMK6rSN/vrml.png",
+            "Other": "https://i.ibb.co/TMXd8j03/VRFS-logo-on-a-ball.png",
+            "Ligue 1": "https://upload.wikimedia.org/wikipedia/en/f/f2/Ligue1.svg"
+        };
 
-    async function fetchEvents() {
-      const res = await fetch(csvUrl);
-      const text = await res.text();
-      const rows = text.trim().split("\n").slice(1);
-      const container = document.getElementById("events");
+        async function fetchEvents() {
+            const res = await fetch(csvUrl);
+            const text = await res.text();
+            const rows = text.trim().split("\n").slice(1);
+            const container = document.getElementById("events");
 
-      rows.forEach(row => {
-        const [time, title, league, category, thumbnail, link] = row.split(",");
+            rows.forEach(row => {
+                const [time, title, league, category, thumbnail, link] = row.split(",");
 
-        const logo = leagueLogos[league] || "";
+                const logo = leagueLogos[league] || "";
 
-        const card = document.createElement("a");
-        card.href = link;
-        card.className = "event-card";
-        card.target = "_blank";
-        card.innerHTML = `
+                const card = document.createElement("a");
+                card.href = link;
+                card.className = "event-card";
+                card.target = "_blank";
+                card.innerHTML = `
           <img src="${thumbnail}" alt="${title}" class="event-thumb">
           <div class="event-overlay">${category}</div>
           <div class="event-info">
@@ -189,11 +204,12 @@
             <div class="event-title">${title}</div>
           </div>
         `;
-        container.appendChild(card);
-      });
-    }
+                container.appendChild(card);
+            });
+        }
 
-    fetchEvents();
-  </script>
+        fetchEvents();
+    </script>
 </body>
+
 </html>
