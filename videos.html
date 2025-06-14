@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sportwave | Videos</title>
+  <meta name="description" content="Watch replays, highlights, and interviews from VR football matches on Sportwave.">
+
+  <!-- Prevent caching -->
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #000;
+      color: #fff;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 1rem;
+      background-color: #111;
+      border-bottom: 2px solid #333;
+    }
+
+    .controls {
+      max-width: 1400px;
+      margin: 1rem auto;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .controls input,
+    .controls select {
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .video-card {
+      background: #1c1c1c;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      text-decoration: none;
+      color: white;
+      transition: transform 0.3s ease;
+    }
+
+    .video-card:hover {
+      transform: scale(1.03);
+    }
+
+    .video-thumb {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .video-info {
+      padding: 0.8rem;
+    }
+
+    .video-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+
+    .video-meta {
+      font-size: 0.9rem;
+      color: #ccc;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .video-meta img {
+      height: 18px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎥 Sportwave Video Library</h1>
+
+  <div class="controls">
+    <input type="text" id="search" placeholder="Search by title...">
+    <select id="filter-league">
+      <option value="">All Leagues</option>
+    </select>
+    <select id="filter-type">
+      <option value="">All Types</option>
+    </select>
+  </div>
+
+  <div class="videos-grid" id="videos"></div>
+
+  <script>
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/YOUR_VIDEO_SHEET_ID/pub?output=csv";
+
+    const leagueLogos = {
+      "Premier League": "https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg",
+      "UEFA Champions League": "https://upload.wikimedia.org/wikipedia/en/6/68/UEFA_Champions_League_logo_2.svg",
+      "La Liga": "https://upload.wikimedia.org/wikipedia/en/1/13/LaLiga.svg",
+      "Serie A": "https://upload.wikimedia.org/wikipedia/en/e/e1/Serie_A_logo_%282019%29.svg",
+      "Bundesliga": "https://upload.wikimedia.org/wikipedia/commons/d/df/Bundesliga_logo_%282017%29.svg",
+      "VFA": "https://i.ibb.co/mF4rzT1x/vfatrans.png",
+      "VSL": "https://i.ibb.co/9k8zf6g8/vsl-logo.png",
+      "VWC": "https://i.ibb.co/rf0RgfBy/vwc-logo.png",
+      "VDL": "https://i.ibb.co/gFhtQLmp/image-removebg-preview-11.png",
+      "VRL": "https://i.ibb.co/R4YMBSYF/vrldownscaled.png",
+      "VFA UCL": "https://i.ibb.co/S4mZJrjK/Bazaart-20250505-072442-446.png",
+      "VFO": "https://i.ibb.co/5Xz8xYKs/Euros.png",
+      "VRML": "https://i.ibb.co/sdMK6rSN/vrml.png",
+      "Goat League": "https://i.ibb.co/cS6PsWVm/GL.png",
+      "Other": "https://i.ibb.co/TMXd8j03/VRFS-logo-on-a-ball.png",
+      "Ligue 1": "https://upload.wikimedia.org/wikipedia/en/f/f2/Ligue1.svg"
+    };
+
+    let videosData = [];
+
+    function createCard(video) {
+      const logo = leagueLogos[video.league];
+      const leagueDisplay = logo
+        ? `<img src="${logo}" alt="${video.league}" title="${video.league}"> <span>${video.league}</span>`
+        : `<span>${video.league}</span>`;
+
+      return `
+        <a href="${video.link}" target="_blank" class="video-card" rel="noopener noreferrer">
+          <img src="${video.thumb}" alt="${video.title}" class="video-thumb">
+          <div class="video-info">
+            <div class="video-title">${video.title}</div>
+            <div class="video-meta">${leagueDisplay} • ${video.type} • ${video.date}</div>
+          </div>
+        </a>
+      `;
+    }
+
+    function renderVideos(data) {
+      const container = document.getElementById('videos');
+      container.innerHTML = data.map(createCard).join('');
+    }
+
+    function populateFilters(data) {
+      const leagues = [...new Set(data.map(v => v.league))].sort();
+      const types = [...new Set(data.map(v => v.type))].sort();
+
+      const leagueSelect = document.getElementById('filter-league');
+      const typeSelect = document.getElementById('filter-type');
+
+      leagues.forEach(league => {
+        const option = document.createElement('option');
+        option.value = league;
+        option.textContent = league;
+        leagueSelect.appendChild(option);
+      });
+
+      types.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = type;
+        typeSelect.appendChild(option);
+      });
+    }
+
+    function applyFilters() {
+      const search = document.getElementById('search').value.toLowerCase();
+      const league = document.getElementById('filter-league').value;
+      const type = document.getElementById('filter-type').value;
+
+      const filtered = videosData.filter(video => {
+        return (
+          video.title.toLowerCase().includes(search) &&
+          (league === '' || video.league === league) &&
+          (type === '' || video.type === type)
+        );
+      });
+
+      renderVideos(filtered);
+    }
+
+    async function fetchVideos() {
+      const res = await fetch(csvUrl + `&cacheBust=${Date.now()}`);
+      const text = await res.text();
+      const rows = text.trim().split("\n").slice(1);
+
+      videosData = rows.map(row => {
+        const [title, league, type, date, thumb, link] = row.split(",");
+        return { title, league, type, date, thumb, link };
+      });
+
+      populateFilters(videosData);
+      renderVideos(videosData);
+    }
+
+    document.getElementById('search').addEventListener('input', applyFilters);
+    document.getElementById('filter-league').addEventListener('change', applyFilters);
+    document.getElementById('filter-type').addEventListener('change', applyFilters);
+
+    fetchVideos();
+  </script>
+
+</body>
+</html>
