@@ -5,6 +5,11 @@
   <title>Sportwave | Watch Live VR Football</title>
   <meta name="description" content="Sportwave is your home for live VR football matches, replays, and highlights. Watch SportwaveLive on Twitch now.">
 
+  <!-- Prevent Browser Caching -->
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
   <!-- Open Graph Meta -->
   <meta property="og:title" content="Sportwave | Watch Live VR Football">
   <meta property="og:description" content="Watch SportwaveLive in action! VR football matches streaming live with chat and commentary.">
@@ -173,7 +178,7 @@
     };
 
     async function fetchEvents() {
-      const res = await fetch(csvUrl);
+      const res = await fetch(csvUrl + `&cacheBust=${Date.now()}`); // prevent CSV caching
       const text = await res.text();
       const rows = text.trim().split("\n").slice(1);
       const container = document.getElementById("events");
@@ -187,6 +192,8 @@
         card.href = link;
         card.className = "event-card";
         card.target = "_blank";
+        card.rel = "noopener noreferrer"; // safer
+
         card.innerHTML = `
           <img src="${thumbnail}" alt="${title}" class="event-thumb">
           <div class="event-overlay">${category}</div>
