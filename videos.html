@@ -141,8 +141,10 @@
         ? `<img src="${logo}" alt="${video.league}" title="${video.league}"> <span>${video.league}</span>`
         : `<span>${video.league}</span>`;
 
+      const videoUrl = `/videos/video.html?title=${encodeURIComponent(video.title)}&league=${encodeURIComponent(video.league)}&type=${encodeURIComponent(video.type)}&date=${encodeURIComponent(video.date)}&thumb=${encodeURIComponent(video.thumb)}&link=${encodeURIComponent(video.link)}`;
+
       return `
-        <a href="${video.link}" target="_blank" class="video-card" rel="noopener noreferrer">
+        <a href="${videoUrl}" class="video-card">
           <img src="${video.thumb}" alt="${video.title}" class="video-thumb">
           <div class="video-info">
             <div class="video-title">${video.title}</div>
@@ -217,4 +219,6 @@
   </script>
 
 </body>
+</html>
+
 </html>
