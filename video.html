@@ -83,12 +83,15 @@
   <a href="/videos" class="back-link">← Back to Videos</a>
 
   <script>
+    // Use URLSearchParams safely
     const params = new URLSearchParams(window.location.search);
-    const title = params.get("title") || "Untitled";
-    const league = params.get("league") || "Unknown League";
-    const type = params.get("type") || "Unknown";
-    const date = params.get("date") || "Unknown Date";
-    const link = params.get("link") || "";
+
+    // Decode values (including long URLs)
+    const title = decodeURIComponent(params.get("title") || "Untitled");
+    const league = decodeURIComponent(params.get("league") || "Unknown League");
+    const type = decodeURIComponent(params.get("type") || "Unknown");
+    const date = decodeURIComponent(params.get("date") || "Unknown Date");
+    const link = decodeURIComponent(params.get("link") || "");
 
     document.getElementById("video-title").textContent = title;
     document.getElementById("video-league").textContent = league;
@@ -101,7 +104,7 @@
       iframe.allow = "fullscreen";
       document.getElementById("video-embed").appendChild(iframe);
     } else {
-      document.getElementById("video-embed").innerHTML = "<p style='text-align:center;color:red;'>Video link missing.</p>";
+      document.getElementById("video-embed").innerHTML = "<p style='text-align:center;color:red;'>Video link missing or invalid.</p>";
     }
   </script>
 
