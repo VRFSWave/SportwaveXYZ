@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Watch Video | Sportwave</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #111;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      border-bottom: 2px solid #333;
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .info {
+      padding: 1rem;
+      background: #1a1a1a;
+      flex: 1;
+    }
+
+    .info h2 {
+      margin: 0 0 0.5rem 0;
+    }
+
+    .info p {
+      margin: 0.2rem 0;
+      color: #ccc;
+    }
+
+    a.back-link {
+      display: inline-block;
+      margin: 1rem;
+      color: #0af;
+      text-decoration: none;
+    }
+
+    a.back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>🎬 Sportwave Video Viewer</header>
+
+  <div class="video-container" id="video-embed"></div>
+
+  <div class="info">
+    <h2 id="video-title"></h2>
+    <p><strong>League:</strong> <span id="video-league"></span></p>
+    <p><strong>Type:</strong> <span id="video-type"></span></p>
+    <p><strong>Date:</strong> <span id="video-date"></span></p>
+  </div>
+
+  <a href="/videos" class="back-link">← Back to Videos</a>
+
+  <script>
+    // Use URLSearchParams safely
+    const params = new URLSearchParams(window.location.search);
+
+    // Decode values (including long URLs)
+    const title = decodeURIComponent(params.get("title") || "Untitled");
+    const league = decodeURIComponent(params.get("league") || "Unknown League");
+    const type = decodeURIComponent(params.get("type") || "Unknown");
+    const date = decodeURIComponent(params.get("date") || "Unknown Date");
+    const link = decodeURIComponent(params.get("link") || "");
+
+    document.getElementById("video-title").textContent = title;
+    document.getElementById("video-league").textContent = league;
+    document.getElementById("video-type").textContent = type;
+    document.getElementById("video-date").textContent = date;
+
+    if (link) {
+      const iframe = document.createElement("iframe");
+      iframe.src = link;
+      iframe.allow = "fullscreen";
+      document.getElementById("video-embed").appendChild(iframe);
+    } else {
+      document.getElementById("video-embed").innerHTML = "<p style='text-align:center;color:red;'>Video link missing or invalid.</p>";
+    }
+  </script>
+
+</body>
+</html>
