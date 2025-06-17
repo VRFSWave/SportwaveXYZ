@@ -2,105 +2,108 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Sportwave | Video Player</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watch Video | Sportwave</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
       margin: 0;
       background: #000;
       color: white;
       font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
+    header {
+      background: #111;
       padding: 1rem;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      border-bottom: 2px solid #333;
     }
 
-    .back-link {
-      margin-bottom: 1rem;
-      display: inline-block;
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .info {
+      padding: 1rem;
+      background: #1a1a1a;
+      flex: 1;
+    }
+
+    .info h2 {
+      margin: 0 0 0.5rem 0;
+    }
+
+    .info p {
+      margin: 0.2rem 0;
       color: #ccc;
+    }
+
+    a.back-link {
+      display: inline-block;
+      margin: 1rem;
+      color: #0af;
       text-decoration: none;
     }
 
-    .back-link:hover {
-      color: white;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      margin: 0.5rem 0;
-    }
-
-    .meta {
-      color: #aaa;
-      margin-bottom: 1rem;
-    }
-
-    iframe, .video-embed {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      border: none;
-      border-radius: 12px;
-      background: #111;
-    }
-
-    .thumb-fallback {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background-color: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #555;
-      font-size: 1.2rem;
-      border-radius: 12px;
+    a.back-link:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <a class="back-link" href="/videos">← Back to Videos</a>
-    <div id="video-container"></div>
-    <h1 id="video-title"></h1>
-    <div class="meta" id="video-meta"></div>
+
+  <header>🎬 Sportwave Video Viewer</header>
+
+  <div class="video-container" id="video-embed"></div>
+
+  <div class="info">
+    <h2 id="video-title"></h2>
+    <p><strong>League:</strong> <span id="video-league"></span></p>
+    <p><strong>Type:</strong> <span id="video-type"></span></p>
+    <p><strong>Date:</strong> <span id="video-date"></span></p>
   </div>
+
+  <a href="/videos" class="back-link">← Back to Videos</a>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const title = params.get('title');
-    const league = params.get('league');
-    const type = params.get('type');
-    const date = params.get('date');
-    const link = params.get('link');
+    const title = params.get("title") || "Untitled";
+    const league = params.get("league") || "Unknown League";
+    const type = params.get("type") || "Unknown";
+    const date = params.get("date") || "Unknown Date";
+    const link = params.get("link") || "";
 
-    document.getElementById('video-title').textContent = title || 'Video';
-    document.getElementById('video-meta').textContent = `${league} • ${type} • ${date}`;
-
-    const container = document.getElementById('video-container');
+    document.getElementById("video-title").textContent = title;
+    document.getElementById("video-league").textContent = league;
+    document.getElementById("video-type").textContent = type;
+    document.getElementById("video-date").textContent = date;
 
     if (link) {
-      let embed;
-      if (link.includes("youtube.com") || link.includes("youtu.be")) {
-        const youtubeId = link.includes("watch?v=")
-          ? new URL(link).searchParams.get("v")
-          : link.split("/").pop();
-        embed = `<iframe src="https://www.youtube.com/embed/${youtubeId}" allowfullscreen></iframe>`;
-      } else if (link.includes("twitch.tv")) {
-        const channel = link.split("/").pop();
-        embed = `<iframe src="https://player.twitch.tv/?channel=${channel}&parent=sportwave.xyz" allowfullscreen></iframe>`;
-      } else if (link.includes("sportwave.xyz") || link.includes("embed")) {
-        embed = `<iframe src="${link}" allowfullscreen></iframe>`;
-      } else {
-        embed = `<div class="thumb-fallback">No video embed available</div>`;
-      }
-
-      container.innerHTML = `<div class="video-embed">${embed}</div>`;
+      const iframe = document.createElement("iframe");
+      iframe.src = link;
+      iframe.allow = "fullscreen";
+      document.getElementById("video-embed").appendChild(iframe);
     } else {
-      container.innerHTML = `<div class="thumb-fallback">No video link provided</div>`;
+      document.getElementById("video-embed").innerHTML = "<p style='text-align:center;color:red;'>Video link missing.</p>";
     }
   </script>
+
 </body>
 </html>
