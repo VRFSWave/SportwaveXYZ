@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Astro Football | Sportwave Live</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Watch Astro Football live on Sportwave via Twitch.">
+  <style>
+    body {
+      margin: 0;
+      background-color: #0b0b0b;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .home-button {
+      margin-bottom: 1rem;
+      text-decoration: none;
+      background: #ff1e57;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(255, 0, 80, 0.6);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .home-button:hover {
+      background: #e60042;
+      box-shadow: 0 0 16px rgba(255, 0, 80, 0.8);
+    }
+
+    .twitch-embed-container {
+      width: 100%;
+      max-width: 1280px;
+      height: 720px;
+      box-shadow: 0 0 20px rgba(255, 0, 100, 0.4);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+      .twitch-embed-container {
+        height: 60vh;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="https://www.sportwave.xyz" class="home-button">🏠 Home</a>
+
+  <div class="twitch-embed-container" id="twitch-embed"></div>
+
+  <script src="https://embed.twitch.tv/embed/v1.js"></script>
+  <script>
+    new Twitch.Embed("twitch-embed", {
+      width: "100%",
+      height: "100%",
+      channel: "sportwavextra", // Change to your Twitch channel name
+      layout: "video",
+      autoplay: true,
+      parent: ["sportwave.xyz"]
+    });
+  </script>
+
+</body>
+</html>
