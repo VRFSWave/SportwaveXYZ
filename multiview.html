@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Twitch Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #0e0e10;
+            color: #efeff1;
+        }
+        h1 {
+            text-align: center;
+            color: #9147ff;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .stream-container {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            background-color: #18181b;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .stream-header {
+            padding: 10px;
+            background-color: #9147ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .stream-title {
+            font-weight: bold;
+        }
+        .stream-iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        input, button {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: none;
+        }
+        input {
+            width: 300px;
+            background-color: #26262c;
+            color: white;
+        }
+        button {
+            background-color: #9147ff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #772ce8;
+        }
+        .layout-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .presets {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .preset-btn {
+            background-color: #26262c;
+        }
+        .chat-toggle {
+            background-color: #00b173;
+        }
+        .chat-toggle:hover {
+            background-color: #008c5c;
+        }
+        @media (max-width: 768px) {
+            .stream-container {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Multi-Twitch Viewer</h1>
+    
+    <div class="controls">
+        <input type="text" id="stream-input" placeholder="Enter Twitch channel name">
+        <button id="add-stream">Add Stream</button>
+        <div class="layout-buttons">
+            <button id="layout-1">1 Stream</button>
+            <button id="layout-2">2 Streams</button>
+            <button id="layout-3">3 Streams</button>
+            <button id="layout-4">4 Streams</button>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <div class="presets">
+            <button class="preset-btn" data-preset="shroud,lirik,summit1g">Gaming</button>
+            <button class="preset-btn" data-preset="pokimane,valkyrae,xqc">Popular</button>
+            <button class="preset-btn" data-preset="esl_csgo,riotgames">Esports</button>
+            <button class="preset-btn" data-preset="amouranth,alinity">Just Chatting</button>
+        </div>
+    </div>
+    
+    <div class="container" id="streams-container">
+        <!-- Streams will be added here -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const streamsContainer = document.getElementById('streams-container');
+            const streamInput = document.getElementById('stream-input');
+            const addStreamBtn = document.getElementById('add-stream');
+            
+            // Layout buttons
+            const layout1Btn = document.getElementById('layout-1');
+            const layout2Btn = document.getElementById('layout-2');
+            const layout3Btn = document.getElementById('layout-3');
+            const layout4Btn = document.getElementById('layout-4');
+            
+            // Preset buttons
+            const presetBtns = document.querySelectorAll('.preset-btn');
+            
+            // Add a new stream
+            function addStream(channel, showChat = false) {
+                if (!channel) return;
+                
+                const container = document.createElement('div');
+                container.className = 'stream-container';
+                container.dataset.channel = channel.toLowerCase();
+                
+                const header = document.createElement('div');
+                header.className = 'stream-header';
+                
+                const title = document.createElement('div');
+                title.className = 'stream-title';
+                title.textContent = channel;
+                
+                const controls = document.createElement('div');
+                
+                const chatBtn = document.createElement('button');
+                chatBtn.className = 'chat-toggle';
+                chatBtn.textContent = showChat ? 'Hide Chat' : 'Show Chat';
+                chatBtn.addEventListener('click', function() {
+                    const iframe = container.querySelector('.stream-iframe');
+                    if (iframe.src.includes('chat')) {
+                        iframe.src = `https://player.twitch.tv/?channel=${channel}&parent=${window.location.hostname}`;
+                        chatBtn.textContent = 'Show Chat';
+                    } else {
+                        iframe.src = `https://www.twitch.tv/embed/${channel}/chat?parent=https://sportwave.xyz/`;
+                        chatBtn.textContent = 'Hide Chat';
+                    }
+                });
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = '×';
+                removeBtn.style.marginLeft = '5px';
+                removeBtn.addEventListener('click', function() {
+                    container.remove();
+                    updateLayout();
+                });
+                
+                controls.appendChild(chatBtn);
+                controls.appendChild(removeBtn);
+                header.appendChild(title);
+                header.appendChild(controls);
+                
+                const iframe = document.createElement('iframe');
+                iframe.className = 'stream-iframe';
+                iframe.src = `https://player.twitch.tv/?channel=${channel}&parent=${window.location.hostname}`;
+                iframe.allowFullscreen = true;
+                
+                container.appendChild(header);
+                container.appendChild(iframe);
+                streamsContainer.appendChild(container);
+                
+                updateLayout();
+            }
+            
+            // Update layout based on number of streams
+            function updateLayout() {
+                const streams = document.querySelectorAll('.stream-container');
+                streams.forEach(stream => {
+                    stream.style.flex = '1';
+                    stream.style.minWidth = '300px';
+                });
+            }
+            
+            // Set specific layout
+            function setLayout(count) {
+                const streams = document.querySelectorAll('.stream-container');
+                streams.forEach(stream => {
+                    stream.style.flex = `1 0 calc(${100/count}% - 10px)`;
+                    stream.style.minWidth = '300px';
+                });
+            }
+            
+            // Add stream button event
+            addStreamBtn.addEventListener('click', function() {
+                const channel = streamInput.value.trim();
+                if (channel) {
+                    addStream(channel);
+                    streamInput.value = '';
+                }
+            });
+            
+            // Enter key event for input
+            streamInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addStreamBtn.click();
+                }
+            });
+            
+            // Layout buttons
+            layout1Btn.addEventListener('click', () => setLayout(1));
+            layout2Btn.addEventListener('click', () => setLayout(2));
+            layout3Btn.addEventListener('click', () => setLayout(3));
+            layout4Btn.addEventListener('click', () => setLayout(4));
+            
+            // Preset buttons
+            presetBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const channels = this.dataset.preset.split(',');
+                    streamsContainer.innerHTML = '';
+                    channels.forEach(channel => addStream(channel));
+                });
+            });
+            
+            // Add some default streams
+            addStream('shroud');
+            addStream('pokimane');
+        });
+    </script>
+</body>
+</html>
