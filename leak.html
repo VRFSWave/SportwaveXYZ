@@ -3,35 +3,26 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Full-Page Image</title>
+  <title>Scrollable Full Image</title>
   <style>
-    /* Reset and layout */
     html, body {
-      height: 100%;
       margin: 0;
-    }
-    body {
+      padding: 0;
       background: #000; /* fallback color */
-      display: grid;
-      place-items: center;
-      overflow: hidden; /* no scrollbars */
     }
     img.full-page {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover; /* Fill the whole page without distortion */
       display: block;
+      width: 100%;
+      height: auto; /* Maintain aspect ratio */
       user-select: none;
       -webkit-user-drag: none;
     }
-    /* If you prefer to see the entire image (no cropping),
-       change object-fit to 'contain'. */
   </style>
 </head>
 <body>
   <img
     class="full-page"
-    src="https://i.ibb.co/0jn3vVqn/VRFS-Store-Website-Menu.png"
+    src="https://i.ibb.co/ZzKGqGh5/VRFS-Store-Website-Menu.png"
     alt="VRFS Store Website Menu"
     loading="eager"
     decoding="async"
