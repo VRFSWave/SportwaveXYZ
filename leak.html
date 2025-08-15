@@ -9,13 +9,12 @@
       margin: 0;
       padding: 0;
       background: #000; /* fallback color */
+      overflow-x: hidden; /* no horizontal scroll */
     }
     img.full-page {
       display: block;
-      width: 100%;
+      max-width: 100%;
       height: auto; /* Maintain aspect ratio */
-      user-select: none;
-      -webkit-user-drag: none;
     }
   </style>
 </head>
@@ -24,8 +23,6 @@
     class="full-page"
     src="https://i.ibb.co/ZzKGqGh5/VRFS-Store-Website-Menu.png"
     alt="VRFS Store Website Menu"
-    loading="eager"
-    decoding="async"
   />
 </body>
 </html>
