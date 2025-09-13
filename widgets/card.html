@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Player Stats Widget</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: transparent; /* OBS-friendly */
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .card {
+    background: linear-gradient(145deg, #1b1b1b, #222);
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    text-align: center;
+    width: 350px;
+    box-shadow: 0 0 20px rgba(255,46,99,0.4);
+  }
+
+  h2 { color: #ff2e63; margin: 0.5rem 0; font-size: 1.5rem; }
+
+  .section { margin-top: 1rem; text-align: left; background: #111; padding: 1rem; border-radius: 12px; }
+
+  .section h3 { color: #ff2e63; margin-bottom: 0.5rem; font-size: 1.1rem; }
+
+  .stat { display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.95rem; }
+
+  .rank-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: bold;
+    margin-left: 0.5rem;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+  }
+  .Bronze { background: #cd7f32; }
+  .Silver { background: #c0c0c0; color: #111; }
+  .Gold { background: #ffd700; color: #111; }
+  .Platinum { background: #00e5ff; color: #111; }
+  .Diamond { background: #b9f2ff; color: #111; }
+
+  .bar-container {
+    background: #222;
+    border-radius: 10px;
+    width: 100%;
+    height: 12px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+  .bar { height: 100%; border-radius: 10px; }
+  .points-bar { background: #ff2e63; }
+  .goals-bar { background: #00ff99; }
+
+  /* Bottom username input */
+  .username-bar {
+    position: absolute;
+    bottom: 10px;
+    display: flex;
+    width: 360px;
+  }
+  .username-bar input {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 8px 0 0 8px;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+  }
+  .username-bar button {
+    padding: 0.5rem 1rem;
+    border-radius: 0 8px 8px 0;
+    border: none;
+    background: #ff2e63;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .username-bar button:hover { background: #ff5473; }
+</style>
+</head>
+<body>
+<div class="card" id="widget">
+  <h2 id="player-name">Loading...</h2>
+  <div class="section">
+    <h3>Progression</h3>
+    <div class="stat"><span>Points</span><span id="points">-</span></div>
+    <div class="bar-container"><div class="bar points-bar" id="points-bar" style="width:0%"></div></div>
+    <div class="stat"><span>Rank</span><span id="rank">-</span></div>
+    <div class="stat"><span>Value</span><span id="value">-</span></div>
+  </div>
+  <div class="section">
+    <h3>Stats</h3>
+    <div class="stat"><span>Goals</span><span id="goals">-</span></div>
+    <div class="bar-container"><div class="bar goals-bar" id="goals-bar" style="width:0%"></div></div>
+    <div class="stat"><span>Assists</span><span id="assists">-</span></div>
+    <div class="stat"><span>Clean Sheets (GK)</span><span id="cs-gk">-</span></div>
+    <div class="stat"><span>Clean Sheets (Def)</span><span id="cs-def">-</span></div>
+  </div>
+</div>
+
+<div class="username-bar">
+  <input type="text" id="username-input" placeholder="Enter username...">
+  <button onclick="updateUsername()">Update</button>
+</div>
+
+<script>
+function extractValue(text, key) {
+  const re = new RegExp(`"${key}"\\s*:?\\s*"?([^",\\}\\n]*)"?`, 'i');
+  const match = text.match(re);
+  return match ? match[1].trim() || '-' : '-';
+}
+
+function getRankClass(rank) {
+  const validRanks = ['Bronze','Silver','Gold','Platinum','Diamond'];
+  return validRanks.includes(rank) ? rank : 'Silver';
+}
+
+async function fetchStats(username) {
+  const apiUrl = "https://inventor.gg/api/webhooks/ZITyGaHNpLhnkWI/mnlhiQWtVUiuSfFpJhExceYVfHRoIj";
+  const proxy = "https://corsproxy.io/?" + encodeURIComponent(apiUrl);
+
+  try {
+    const res = await fetch(proxy, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: username
+    });
+    const text = await res.text();
+
+    const points = extractValue(text, "points");
+    let rank = extractValue(text, "rank");
+    let value = extractValue(text, "value");
+    if (value === '-') value = extractValue(text, "value:");
+    const goals = extractValue(text, "goals");
+    const assists = extractValue(text, "assists");
+    const cs_gk = extractValue(text, "clean_sheets_gk");
+    const cs_def = extractValue(text, "clean_sheets_def");
+
+    document.getElementById('player-name').textContent = username + " ";
+    const rankSpan = document.createElement('span');
+    rankSpan.textContent = rank;
+    rankSpan.className = 'rank-badge ' + getRankClass(rank);
+    document.getElementById('player-name').appendChild(rankSpan);
+
+    document.getElementById('points').textContent = points;
+    document.getElementById('points-bar').style.width = Math.min(points,100) + '%';
+    document.getElementById('rank').textContent = rank;
+    document.getElementById('value').textContent = value;
+    document.getElementById('goals').textContent = goals;
+    document.getElementById('goals-bar').style.width = Math.min(goals*10,100) + '%';
+    document.getElementById('assists').textContent = assists;
+    document.getElementById('cs-gk').textContent = cs_gk;
+    document.getElementById('cs-def').textContent = cs_def;
+  } catch(err) {
+    document.getElementById('player-name').textContent = "⚠️ Error fetching stats";
+  }
+}
+
+// Initial fetch from URL query or default
+const urlParams = new URLSearchParams(window.location.search);
+const initialUsername = urlParams.get('username') || 'Player';
+fetchStats(initialUsername);
+
+// Update function from bottom input
+function updateUsername() {
+  const newUser = document.getElementById('username-input').value.trim();
+  if(newUser) fetchStats(newUser);
+}
+</script>
+</body>
+</html>
