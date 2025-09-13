@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard Widget</title>
+<style>
+    body { margin:0; padding:0; font-family:Arial,sans-serif; background:transparent; color:white; }
+    #leaderboard { width:400px; background: rgba(20,20,20,0.8); border:2px solid #ff0055; border-radius:15px; padding:20px; box-shadow:0 0 20px rgba(255,0,85,0.6); }
+    h2 { text-align:center; margin-bottom:15px; color:#ff0055; text-shadow:0 0 10px #ff0055; }
+    ul { list-style:none; padding:0; margin:0; }
+    li { display:flex; justify-content:space-between; padding:10px; margin-bottom:5px; border-radius:8px; background: rgba(255,0,85,0.1); transition: transform 0.3s, background 0.3s; }
+    li:hover { transform:scale(1.05); background: rgba(255,0,85,0.2); }
+    .rank { font-weight:bold; color:#ff77aa; }
+    .name { flex:1; text-align:left; padding-left:10px; color:#ffffff; }
+    .points { font-weight:bold; color:#00ffff; }
+</style>
+</head>
+<body>
+<div id="leaderboard">
+    <h2>Leaderboard</h2>
+    <ul id="leaderboard-list"></ul>
+</div>
+
+<script>
+const proxyUrl = "https://corsproxy.io/?";
+const apiUrl = "https://inventor.gg/api/webhooks/wuCkoNwGsGjkunP/HAjKqAinfbSTdONxrsosqSZDGriiCX";
+const leaderboardList = document.getElementById("leaderboard-list");
+
+async function fetchLeaderboard() {
+    try {
+        const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
+        const data = await response.json();
+
+        // Assuming the API returns an array directly
+        const leaderboardData = Array.isArray(data) ? data : data.data || [];
+
+        if (!Array.isArray(leaderboardData) || leaderboardData.length === 0) {
+            leaderboardList.innerHTML = "<li>No leaderboard data found</li>";
+            return;
+        }
+
+        // Clear existing list
+        leaderboardList.innerHTML = "";
+
+        leaderboardData.forEach((entry) => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <span class="rank">${entry.place || "-"}</span>
+                <span class="name">${entry.user || "Unknown"}</span>
+                <span class="points">${entry.points || "0"}</span>
+            `;
+            leaderboardList.appendChild(li);
+        });
+
+    } catch (error) {
+        console.error("Failed to fetch leaderboard:", error);
+        leaderboardList.innerHTML = "<li>Failed to fetch leaderboard</li>";
+    }
+}
+
+// Initial fetch
+fetchLeaderboard();
+// Refresh every 30 seconds
+setInterval(fetchLeaderboard, 30000);
+</script>
+</body>
+</html>
