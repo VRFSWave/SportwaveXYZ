@@ -1,255 +1,186 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Sportwave | Watch Live VR Football</title>
-  <meta name="description" content="Sportwave is your home for live VR football matches, replays, and highlights. Watch SportwaveLive on Twitch now.">
-  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <meta property="og:title" content="Sportwave | Watch Live VR Football">
-  <meta property="og:description" content="Watch SportwaveLive in action! VR football matches streaming live with chat and commentary.">
-  <meta property="og:image" content="https://i.ibb.co/LXPt9DTL/twitch-banner.png">
-  <meta property="og:url" content="https://www.sportwave.xyz/">
-  <meta property="og:type" content="website">
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sportwave — Club World Cup 2025</title>
+  <meta name="description" content="Sportwave — Club World Cup (CWC) 2025 live streams" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0b0b0b;
-      color: #fff;
+    :root{
+      --navy:#071A40;
+      --gold:#D4AF37;
+      --white:#FFFFFF;
+      --muted:#E9EEF8;
+      --card-shadow: 0 8px 24px rgba(7,26,64,0.12);
+      --accent: linear-gradient(135deg,var(--navy),#0b2b5a);
+      font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     }
-
-    .hero {
-      width: 100%;
-      height: 250px;
-      background-image: url('https://i.ibb.co/1jCfFsq/image.png');
-      background-size: cover;
-      background-position: center;
-      filter: brightness(0.5);
-    }
-
-    .events-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.2rem;
-      padding: 2rem 1rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .event-card {
-      position: relative;
-      background: #141414;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 12px rgba(255, 0, 80, 0.3);
-      cursor: pointer;
-      text-decoration: none;
-      color: white;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .event-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 16px rgba(255, 0, 80, 0.6);
-    }
-
-    .event-thumb {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-
-    .event-overlay {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(255, 0, 100, 0.3);
-      padding: 4px 10px;
-      font-size: 0.75rem;
-      border-radius: 6px;
-      text-transform: uppercase;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-      backdrop-filter: blur(6px);
-      color: #fff;
-    }
-
-    .event-info {
-      padding: 1rem;
-    }
-
-    .event-league {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 0.5rem;
-    }
-
-    .event-league img {
-      height: 20px;
-    }
-
-    .event-time {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: #f0f0f0;
-    }
-
-    .event-title {
-      font-size: 1.2rem;
-      margin: 0.3rem 0 0;
-      font-weight: bold;
-      color: #fff;
-    }
-
-    /* TV Guide Section */
-    .tv-guide {
-      max-width: 1400px;
-      margin: 2rem auto 3rem;
-      padding: 0 1rem;
-    }
-
-    .tv-guide h2 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      color: #ff1e57;
-      border-bottom: 2px solid #ff1e57;
-      padding-bottom: 0.5rem;
-      text-shadow: 0 0 10px #ff1e57;
-    }
-
-    .channel-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .channel-buttons a {
-      background-color: #1c1c1c;
-      border: 1px solid #ff1e57;
-      color: #fff;
-      padding: 10px 16px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: background 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 10px rgba(255, 0, 80, 0.2);
-    }
-
-    .channel-buttons a:hover {
-      background-color: #2b0f1f;
-      box-shadow: 0 0 12px rgba(255, 0, 100, 0.6);
-    }
-
-    .channel-buttons img {
-      height: 20px;
-      width: auto;
-    }
-
-    @media (max-width: 600px) {
-      .event-thumb {
-        height: 150px;
-      }
-      .event-title {
-        font-size: 1rem;
-      }
-    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#02102b 0%, #07204a 60%);color:var(--white);min-height:100vh}
+    .container{max-width:1150px;margin:36px auto;padding:0 18px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:72px;height:72px;border-radius:12px;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:700;font-size:20px}
+    .title{line-height:1}
+    .title h1{margin:0;font-size:20px}
+    .title p{margin:0;font-size:12px;opacity:0.9}
+    .hero{background:rgba(255,255,255,0.04);border-radius:16px;padding:18px;margin-bottom:22px;display:flex;gap:18px;align-items:center}
+    .hero .left{flex:1}
+    .hero .right{width:220px;text-align:right}
+    .badge{background:rgba(0,0,0,0.25);display:inline-block;padding:6px 10px;border-radius:999px;font-weight:600}
+    .cta{margin-top:12px;display:inline-block;background:var(--gold);color:var(--navy);padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none}
+    .controls{display:flex;gap:12px;align-items:center;margin:18px 0}
+    .controls input, .controls select{padding:10px 12px;border-radius:10px;border:0;background:rgba(255,255,255,0.06);color:var(--white)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.03), rgba(255,255,255,0.01));padding:14px;border-radius:12px;box-shadow:var(--card-shadow);display:flex;gap:12px;align-items:center}
+    .thumb{width:84px;height:84px;border-radius:10px;background:var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:700}
+    .meta{flex:1}
+    .meta h3{margin:0;font-size:16px}
+    .meta p{margin:6px 0 0 0;font-size:13px;color:rgba(255,255,255,0.8)}
+    .ticket{align-self:flex-start;background:rgba(255,255,255,0.04);padding:8px 10px;border-radius:10px;font-weight:700}
+    .watch-btn{display:inline-block;margin-top:10px;padding:8px 12px;border-radius:8px;background:var(--gold);color:var(--navy);font-weight:700;text-decoration:none}
+    .viewer{display:none;padding:18px;background:rgba(0,0,0,0.25);border-radius:12px}
+    .viewer.active{display:block}
+    .player{position:relative;padding-top:56.25%;border-radius:10px;overflow:hidden;background:#000}
+    .player iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+    .match-head{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:12px}
+    .teams{display:flex;gap:12px;align-items:center}
+    .team{background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px}
+    .back{display:inline-block;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.04);cursor:pointer}
+    footer{margin:34px 0 60px;color:rgba(255,255,255,0.6);font-size:13px;text-align:center}
+    @media(max-width:640px){.hero{flex-direction:column;align-items:flex-start}.hero .right{text-align:left;width:100%}}
   </style>
 </head>
-
 <body>
-
-  <div class="hero"></div>
-
-  <!-- Events Grid -->
-  <div class="events-grid" id="events"></div>
-
-  <!-- TV Guide Section -->
-  <section class="tv-guide">
-    <h2>📺 Live Channels</h2>
-    <div class="channel-buttons">
-      <!-- Add/edit channels here -->
-      <a href="/channels/sportwave1.html">
-        <img src="https://i.ibb.co/fzN953tJ/Sportwave-1.png" alt="Astro">
-        Sportwave 1
-      </a>
-      <a href="/channels/sportwave2.html">
-        <img src="https://i.ibb.co/fzcCpLZY/Sportwave-2.png" alt="Sky">
-        Sportwave 2
-      </a>
-      <a href="/channels/sportwavespotlight.html">
-        <img src="https://i.ibb.co/gLcC0syH/Sportwave-Spotlight.png" alt="Bein">
-        Sportwave Spotlight
-      </a>
-      <a href="/channels/sportwavextra.html">
-        <img src="https://i.ibb.co/DgknrNt4/Sportwave-Xtra.png" alt="TNT">
-        Sportwave Xtra
-      </a>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">SW</div>
+        <div class="title">
+          <h1>Sportwave — Club World Cup 2025</h1>
+          <p>Live streams • Fixtures • Match viewer</p>
+        </div>
+      </div>
+      <div><div style="text-align:right"><strong>Sportwave</strong><br><small>Official fan stream hub</small></div></div>
+    </header>
+    <section class="hero">
+      <div class="left">
+        <div class="badge">VRFS Club World Cup — CWC 2.0</div>
+        <h2 style="margin:8px 0 0 0">Catch every match live</h2>
+        <p style="margin:6px 0 0 0;opacity:0.9">Select a fixture below and click "Watch Live"</p>
+        <a class="cta" href="#streams">View Live Streams</a>
+      </div>
+      <div class="right">
+        <div style="font-size:12px;opacity:0.9">Next match</div>
+        <div style="font-weight:700;margin-top:6px">— Loading —</div>
+      </div>
+    </section>
+    <div class="controls">
+      <input id="search" placeholder="Search teams or competition" />
+      <select id="filterDate"><option value="all">All dates</option></select>
+      <button id="refresh" class="back">Refresh</button>
     </div>
-  </section>
-
+    <main>
+      <section id="streams"><div class="grid" id="cards"></div></section>
+      <section id="viewer" class="viewer">
+        <div class="player" id="playerWrap"></div>
+        <div class="match-head"><div class="teams" id="matchInfo"></div><div><span class="back" id="closeViewer">Close</span></div></div>
+      </section>
+    </main>
+    <footer>
+      Sportwave • Club World Cup 2025.
+    </footer>
+  </div>
   <script>
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRxBCDipb1G3U7YmglB01b35zs6sHFspQhE2FYHzaUctuqvdZVMbNZTAY3kYoguMOZaKUsVhSly1K-J/pub?output=csv";
+    /***** Setup *****/
+    const SHEET_KEY = '2PACX-1vRxBCDipb1G3U7YmglB01b35zs6sHFspQhE2FYHzaUctuqvdZVMbNZTAY3kYoguMOZaKUsVhSly1K-J'; // your key
+    const SHEET_NAME = 'Sheet1';
 
-    const leagueLogos = {
-      "Premier League": "https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg",
-      "UEFA Champions League": "https://upload.wikimedia.org/wikipedia/en/6/68/UEFA_Champions_League_logo_2.svg",
-      "La Liga": "https://upload.wikimedia.org/wikipedia/en/1/13/LaLiga.svg",
-      "Serie A": "https://upload.wikimedia.org/wikipedia/en/e/e1/Serie_A_logo_%282019%29.svg",
-      "Bundesliga": "https://upload.wikimedia.org/wikipedia/commons/d/df/Bundesliga_logo_%282017%29.svg",
-      "VFA": "https://i.ibb.co/mF4rzT1x/vfatrans.png",
-      "VSL": "https://i.ibb.co/9k8zf6g8/vsl-logo.png",
-      "VWC": "https://i.ibb.co/rf0RgfBy/vwc-logo.png",
-      "VDL": "https://i.ibb.co/gFhtQLmp/image-removebg-preview-11.png",
-      "VRL": "https://i.ibb.co/R4YMBSYF/vrldownscaled.png",
-      "VFA UCL": "https://i.ibb.co/S4mZJrjK/Bazaart-20250505-072442-446.png",
-      "VFO": "https://i.ibb.co/5Xz8xYKs/Euros.png",
-      "VRML": "https://i.ibb.co/sdMK6rSN/vrml.png",
-      "Goat League": "https://i.ibb.co/cS6PsWVm/GL.png",
-      "Other": "https://i.ibb.co/TMXd8j03/VRFS-logo-on-a-ball.png",
-      "Ligue 1": "https://upload.wikimedia.org/wikipedia/en/f/f2/Ligue1.svg"
-    };
+    const cardsEl = document.getElementById('cards');
+    const searchEl = document.getElementById('search');
+    const filterDateEl = document.getElementById('filterDate');
+    const refreshBtn = document.getElementById('refresh');
+    const heroNext = document.querySelector('.hero .right div:nth-child(2)');
 
-    async function fetchEvents() {
-      const res = await fetch(csvUrl + `&cacheBust=${Date.now()}`);
-      const text = await res.text();
-      const rows = text.trim().split("\n").slice(1);
-      const container = document.getElementById("events");
+    async function loadSheet(){
+      if(!SHEET_KEY){
+        cardsEl.innerHTML = '<div style="grid-column:1/-1;color:#ffd;">Please set your Google Sheet key.</div>';
+        return;
+      }
+      cardsEl.innerHTML = '<div style="grid-column:1/-1;opacity:0.8">Loading fixtures...</div>';
 
-      rows.forEach(row => {
-        const [time, title, league, category, thumbnail, link, timeColor] = row.split(",");
-
-        const logo = leagueLogos[league] || "";
-
-        const card = document.createElement("a");
-        card.href = link;
-        card.className = "event-card";
-        card.target = "_blank";
-        card.rel = "noopener noreferrer";
-
-        card.innerHTML = `
-          <img src="${thumbnail}" alt="${title}" class="event-thumb">
-          <div class="event-overlay">${category}</div>
-          <div class="event-info">
-            <div class="event-league">
-              ${logo ? `<img src="${logo}" alt="${league}">` : ""}
-              <span>${league}</span>
-            </div>
-            <div class="event-time" style="color: ${timeColor || '#ff1e57'}">${time}</div>
-            <div class="event-title">${title}</div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
+      try {
+        // Try new JSON feed endpoint first
+        const url = `https://docs.google.com/spreadsheets/d/e/${SHEET_KEY}/pub?output=csv`;
+        const res = await fetch(url);
+        if(!res.ok) throw new Error('Fetch failed');
+        const text = await res.text();
+        const rows = text.split(/\r?\n/).map(r => r.split(','));
+        const headers = rows.shift();
+        const data = rows.map(r => Object.fromEntries(r.map((c,i)=>[headers[i],c])));
+        showData(data);
+      } catch(err){
+        cardsEl.innerHTML = '<div style="grid-column:1/-1;color:#f99;">Error loading sheet: '+err+'</div>';
+      }
     }
 
-    fetchEvents();
+    function showData(data){
+      window.SportwaveFixtures = data.map(r => ({
+        date: r['Date']||'',
+        time: r['Time']||'',
+        match: r['Match']||'',
+        teams: r['Teams']||'',
+        link: r['Stream Link']||'',
+        thumb: r['Thumbnail']||''
+      }));
+      renderFixtures(window.SportwaveFixtures);
+      populateDateFilter(window.SportwaveFixtures);
+      setHeroNext(window.SportwaveFixtures);
+    }
+
+    function renderFixtures(fixtures){
+      const q = searchEl.value.trim().toLowerCase();
+      const dateFilter = filterDateEl.value;
+      const filtered = fixtures.filter(f => {
+        if(dateFilter !== 'all' && f.date !== dateFilter) return false;
+        if(!q) return true;
+        return (f.teams + ' ' + f.match).toLowerCase().includes(q);
+      });
+      if(filtered.length === 0){cardsEl.innerHTML = '<div style="grid-column:1/-1;opacity:0.8">No fixtures found.</div>';return;}
+      cardsEl.innerHTML = filtered.map((f,i)=>{
+        const thumbHtml = f.thumb ? `<img src="${f.thumb}" style="width:100%;height:100%;object-fit:cover;border-radius:8px"/>` : '<div style="padding:6px;text-align:center;color:var(--navy)">CWC</div>';
+        return `<article class="card"><div class="thumb">${thumbHtml}</div><div class="meta"><h3>${escapeHtml(f.teams)}</h3><p>${escapeHtml(f.date)} • ${escapeHtml(f.time)} • ${escapeHtml(f.match)}</p><a class="watch-btn" href="#viewer" data-link="${encodeURI(f.link)}">Watch Live</a></div><div class="ticket">${escapeHtml(f.time)}</div></article>`;
+      }).join('');
+      document.querySelectorAll('.watch-btn').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();openViewer(decodeURI(btn.getAttribute('data-link')));}));
+    }
+
+    function openViewer(link){
+      const viewer = document.getElementById('viewer');
+      const playerWrap = document.getElementById('playerWrap');
+      const matchInfo = document.getElementById('matchInfo');
+      if(!link){playerWrap.innerHTML='<div style="padding:20px;color:#fff">Stream link missing for this fixture.</div>';}else{playerWrap.innerHTML=`<iframe src="${link}" allowfullscreen sandbox></iframe>`;}
+      matchInfo.innerHTML='<div style="font-weight:700">Live Stream</div>';
+      viewer.classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    document.getElementById('closeViewer').addEventListener('click',()=>{document.getElementById('viewer').classList.remove('active');document.getElementById('playerWrap').innerHTML='';});
+
+    function populateDateFilter(fixtures){
+      const dates=[...new Set(fixtures.map(f=>f.date))].filter(Boolean);
+      filterDateEl.innerHTML='<option value="all">All dates</option>'+dates.map(d=>`<option value="${d}">${d}</option>`).join('');
+    }
+
+    searchEl.addEventListener('input',()=>renderFixtures(window.SportwaveFixtures||[]));
+    filterDateEl.addEventListener('change',()=>renderFixtures(window.SportwaveFixtures||[]));
+    refreshBtn.addEventListener('click',loadSheet);
+
+    function setHeroNext(fixtures){if(!fixtures||fixtures.length===0)return;const next=fixtures[0];heroNext.textContent=next?`${next.teams} • ${next.time}`:'— No fixtures —';}
+
+    function escapeHtml(s){if(!s)return '';return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m]));}
+
+    loadSheet();
   </script>
 </body>
 </html>
