@@ -3,66 +3,66 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sportwave — Club World Cup 2025</title>
-  <meta name="description" content="Sportwave — Club World Cup (CWC) 2025 live streams" />
+  <title>Sportwave — Live VRFS Streams</title>
+  <meta name="description" content="Sportwave — Live VRFS streams, fixtures, and match viewer" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --navy:#071A40;
-      --gold:#D4AF37;
+      --primary:#FC2E20; /* Sportwave red */
+      --secondary:#FDB750; /* accent pink */
       --white:#FFFFFF;
-      --muted:#E9EEF8;
-      --card-shadow: 0 8px 24px rgba(7,26,64,0.12);
-      --accent: linear-gradient(135deg,var(--navy),#0b2b5a);
+      --muted:#FDB750;
+      --card-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      --accent: linear-gradient(135deg,var(--primary),var(--secondary));
       font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     }
     *{box-sizing:border-box}
-    body{margin:0;background:linear-gradient(180deg,#02102b 0%, #07204a 60%);color:var(--white);min-height:100vh}
+    body{margin:0;background:#000;color:var(--white);min-height:100vh}
     .container{max-width:1150px;margin:36px auto;padding:0 18px}
 
     /* Header */
     header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
     .brand{display:flex;align-items:center;gap:14px}
-    .logo{width:72px;height:72px;border-radius:12px;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:700;font-size:20px}
+    .logo{width:72px;height:72px;border-radius:12px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px}
     .title{line-height:1}
     .title h1{margin:0;font-size:20px}
     .title p{margin:0;font-size:12px;opacity:0.9}
 
     /* Hero */
-    .hero{background:rgba(255,255,255,0.04);border-radius:16px;padding:18px;margin-bottom:22px;display:flex;gap:18px;align-items:center}
+    .hero{background:rgba(255,255,255,0.05);border-radius:16px;padding:18px;margin-bottom:22px;display:flex;gap:18px;align-items:center}
     .hero .left{flex:1}
     .hero .right{width:220px;text-align:right}
-    .badge{background:rgba(0,0,0,0.25);display:inline-block;padding:6px 10px;border-radius:999px;font-weight:600}
-    .cta{margin-top:12px;display:inline-block;background:var(--gold);color:var(--navy);padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none}
+    .badge{background:rgba(255,255,255,0.15);display:inline-block;padding:6px 10px;border-radius:999px;font-weight:600}
+    .cta{margin-top:12px;display:inline-block;background:var(--accent);color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none}
 
     /* Filters row */
     .controls{display:flex;gap:12px;align-items:center;margin:18px 0}
-    .controls input, .controls select{padding:10px 12px;border-radius:10px;border:0;background:rgba(255,255,255,0.06);color:var(--white)}
+    .controls input, .controls select{padding:10px 12px;border-radius:10px;border:0;background:rgba(255,255,255,0.08);color:var(--white)}
 
     /* Cards grid */
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,0.03), rgba(255,255,255,0.01));padding:14px;border-radius:12px;box-shadow:var(--card-shadow);display:flex;gap:12px;align-items:center}
-    .thumb{width:84px;height:84px;border-radius:10px;background:var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:700}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.05), rgba(255,255,255,0.02));padding:14px;border-radius:12px;box-shadow:var(--card-shadow);display:flex;gap:12px;align-items:center}
+    .thumb{width:84px;height:84px;border-radius:10px;background:var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;text-align:center;font-size:12px;line-height:1.2}
     .meta{flex:1}
     .meta h3{margin:0;font-size:16px}
     .meta p{margin:6px 0 0 0;font-size:13px;color:rgba(255,255,255,0.8)}
-    .ticket{align-self:flex-start;background:rgba(255,255,255,0.04);padding:8px 10px;border-radius:10px;font-weight:700}
-    .watch-btn{display:inline-block;margin-top:10px;padding:8px 12px;border-radius:8px;background:var(--gold);color:var(--navy);font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit}
+    .ticket{align-self:flex-start;background:rgba(255,255,255,0.08);padding:8px 10px;border-radius:10px;font-weight:700}
+    .watch-btn{display:inline-block;margin-top:10px;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit}
 
     /* Viewer */
     .viewer-container{display:none;margin-top:24px}
-    .viewer{padding:18px;background:rgba(0,0,0,0.25);border-radius:12px}
+    .viewer{padding:18px;background:rgba(255,255,255,0.05);border-radius:12px}
     .player{position:relative;padding-top:56.25%;border-radius:10px;overflow:hidden;background:#000}
     .player iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
     .match-head{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:12px}
     .teams{display:flex;gap:12px;align-items:center}
-    .team{background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px}
-    .back{display:inline-block;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.04);cursor:pointer}
+    .team{background:rgba(255,255,255,0.05);padding:8px 12px;border-radius:8px}
+    .back{display:inline-block;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.1);cursor:pointer}
 
     /* Twitch Chat */
     .twitch-chat{display:none;margin-top:16px}
     .twitch-chat.active{display:block}
-    .chat-toggle{display:inline-block;margin-top:10px;padding:6px 10px;border-radius:6px;background:rgba(255,255,255,0.1);color:var(--white);font-weight:600;cursor:pointer;font-size:12px;border:none;font-family:inherit}
+    .chat-toggle{display:inline-block;margin-top:10px;padding:6px 10px;border-radius:6px;background:rgba(255,255,255,0.15);color:var(--white);font-weight:600;cursor:pointer;font-size:12px;border:none;font-family:inherit}
 
     /* Footer */
     footer{margin:34px 0 60px;color:rgba(255,255,255,0.6);font-size:13px;text-align:center}
@@ -86,18 +86,18 @@
       <div class="brand">
         <div class="logo">SW</div>
         <div class="title">
-          <h1>Sportwave — Club World Cup 2025</h1>
-          <p>Live streams • Fixtures • Match viewer</p>
+          <h1>Sportwave — Live Streams</h1>
+          <p>VRFS • Fixtures • Match Viewer</p>
         </div>
       </div>
       <div>
-        <div style="text-align:right"><strong>Sportwave</strong><br><small>Official fan stream hub</small></div>
+        <div style="text-align:right"><strong>Sportwave</strong><br><small>Community stream hub</small></div>
       </div>
     </header>
 
     <section class="hero">
       <div class="left">
-        <div class="badge">VRFS Club World Cup — CWC 2025</div>
+        <div class="badge">Live VRFS Streams</div>
         <h2 style="margin:8px 0 0 0">Catch every match live</h2>
         <p style="margin:6px 0 0 0;opacity:0.9">Select a fixture below and click "Watch Live".</p>
         <a class="cta" href="#streams">View Live Streams</a>
@@ -121,9 +121,7 @@
 
       <section id="viewer-container" class="viewer-container">
         <section id="viewer" class="viewer">
-          <div class="player" id="playerWrap">
-            <!-- iframe injected here -->
-          </div>
+          <div class="player" id="playerWrap"></div>
           <div class="match-head">
             <div class="teams" id="matchInfo"></div>
             <div>
@@ -134,21 +132,19 @@
         </section>
 
         <section id="twitch-chat" class="twitch-chat">
-          <div class="player" id="chatWrap">
-            <!-- Twitch chat iframe injected here -->
-          </div>
+          <div class="player" id="chatWrap"></div>
         </section>
       </section>
     </main>
 
     <footer>
-      Sportwave • Club World Cup 2025
+      Sportwave • Live VRFS Streams
     </footer>
   </div>
 
   <script>
     /***** Setup *****/
-    const SHEET_KEY = '2PACX-1vRxBCDipb1G3U7YmglB01b35zs6sHFspQhE2FYHzaUctuqvdZVMbNZTAY3kYoguMOZaKUsVhSly1K-J'; // your key
+    const SHEET_KEY = '2PACX-1vRxBCDipb1G3U7YmglB01b35zs6sHFspQhE2FYHzaUctuqvdZVMbNZTAY3kYoguMOZaKUsVhSly1K-J'; // your sheet key
     const SHEET_NAME = 'Sheet1';
 
     const cardsEl = document.getElementById('cards');
@@ -161,23 +157,17 @@
     const twitchChat = document.getElementById('twitch-chat');
     const closeViewerBtn = document.getElementById('closeViewer');
 
-    // Function to check if a URL is from Twitch
+    // Twitch helpers
     function isTwitchUrl(url) {
       return url && url.includes('twitch.tv');
     }
-
-    // Function to extract channel name from Twitch URL
     function getTwitchChannel(url) {
       const matches = url.match(/(?:www\.|go\.)?twitch\.tv\/([^\/]+)/);
       return matches && matches[1] ? matches[1] : null;
     }
-
-    // Function to generate Twitch embed URL
     function getTwitchEmbedUrl(channel) {
       return `https://player.twitch.tv/?channel=${channel}&parent=${window.location.hostname}&autoplay=true`;
     }
-
-    // Function to generate Twitch chat embed URL
     function getTwitchChatUrl(channel) {
       return `https://www.twitch.tv/embed/${channel}/chat?parent=${window.location.hostname}&darkpopout`;
     }
@@ -191,7 +181,6 @@
       nextMatchEl.innerHTML = '<span class="loading"></span> Loading...';
 
       try {
-        // Try new JSON feed endpoint first
         const url = `https://docs.google.com/spreadsheets/d/e/${SHEET_KEY}/pub?output=csv`;
         const res = await fetch(url);
         if(!res.ok) throw new Error('Fetch failed');
@@ -237,7 +226,7 @@
       cardsEl.innerHTML = filtered.map((f,i)=>{
         const thumbHtml = f.thumb ? 
           `<img src="${f.thumb}" style="width:100%;height:100%;object-fit:cover;border-radius:8px"/>` : 
-          '<div style="padding:6px;text-align:center;color:var(--navy);font-size:12px">CWC<br>2025</div>';
+          '<div>Match<br>Live</div>';
         return `
           <article class="card">
             <div class="thumb">${thumbHtml}</div>
@@ -251,7 +240,6 @@
         `;
       }).join('');
 
-      // Attach click listeners to watch buttons
       document.querySelectorAll('.watch-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
@@ -265,11 +253,9 @@
       const fixture = window.SportwaveFixtures[index];
       const link = fixture.link;
       
-      // Show the viewer container
       viewerContainer.style.display = 'block';
       viewerContainer.classList.add('active');
       
-      // Reset chat state
       twitchChat.classList.remove('active');
       toggleChatBtn.textContent = 'Show Chat';
       toggleChatBtn.style.display = 'none';
@@ -278,15 +264,12 @@
       const chatWrap = document.getElementById('chatWrap');
       const matchInfo = document.getElementById('matchInfo');
       
-      // Clear previous content
       playerWrap.innerHTML = '';
       chatWrap.innerHTML = '';
       
-      // Basic sanitization - if link is empty show message
       if (!link) {
         playerWrap.innerHTML = '<div style="padding:20px;color:#fff;text-align:center">Stream link missing for this fixture.</div>';
       } else if (isTwitchUrl(link)) {
-        // Handle Twitch stream
         const channel = getTwitchChannel(link);
         if (channel) {
           const embedUrl = getTwitchEmbedUrl(channel);
@@ -295,17 +278,14 @@
           playerWrap.innerHTML = `<iframe src="${embedUrl}" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups"></iframe>`;
           chatWrap.innerHTML = `<iframe src="${chatUrl}" height="500" frameborder="0" scrolling="no"></iframe>`;
           
-          // Show chat toggle for Twitch streams
           toggleChatBtn.style.display = 'inline-block';
         } else {
           playerWrap.innerHTML = '<div style="padding:20px;color:#fff;text-align:center">Invalid Twitch URL format.</div>';
         }
       } else {
-        // Handle other stream links (original behavior)
         playerWrap.innerHTML = `<iframe src="${link}" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups"></iframe>`;
       }
 
-      // Show match info
       if (fixture) {
         matchInfo.innerHTML = `
           <div class="team">${escapeHtml(fixture.teams.split(' vs ')[0] || fixture.teams)}</div>
@@ -320,13 +300,11 @@
       window.scrollTo({top: viewerContainer.offsetTop - 20, behavior: 'smooth'});
     }
 
-    // Toggle Twitch chat visibility
     toggleChatBtn.addEventListener('click', () => {
       twitchChat.classList.toggle('active');
       toggleChatBtn.textContent = twitchChat.classList.contains('active') ? 'Hide Chat' : 'Show Chat';
     });
 
-    // Close viewer
     closeViewerBtn.addEventListener('click', () => {
       viewerContainer.style.display = 'none';
       viewerContainer.classList.remove('active');
@@ -350,14 +328,9 @@
         return;
       }
       
-      // Find the next upcoming match (simplified logic)
-      const now = new Date();
-      const today = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-      
-      // Try to find a match today or in the future
       let nextMatch = fixtures[0];
       for (const fixture of fixtures) {
-        if (fixture.date >= today) {
+        if (fixture.date) {
           nextMatch = fixture;
           break;
         }
@@ -368,12 +341,10 @@
 
     function escapeHtml(s){
       if(!s) return '';
-      return String(s).replace(/[&<>"']/g, function(m){
-        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
-      });
+      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
     }
 
-    // Initialize
+    // Start
     loadSheet();
   </script>
 </body>
