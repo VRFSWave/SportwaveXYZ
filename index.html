@@ -8,343 +8,257 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --primary:#FC2E20; /* Sportwave red */
-      --secondary:#FDB750; /* accent pink */
+      --primary:#FC2E20;
+      --secondary:#FDB750;
       --white:#FFFFFF;
-      --muted:#FDB750;
-      --card-shadow: 0 8px 24px rgba(0,0,0,0.25);
-      --accent: linear-gradient(135deg,var(--primary),var(--secondary));
-      font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      --bg-dark:#0a0a0a;
+      --card-bg:#121212;
+      --accent:linear-gradient(135deg,var(--primary),var(--secondary));
+      font-family:'Montserrat',system-ui;
     }
-    *{box-sizing:border-box}
-    body{margin:0;background:#000;color:var(--white);min-height:100vh}
-    .container{max-width:1150px;margin:36px auto;padding:0 18px}
-
-    /* Header */
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg-dark);color:var(--white);min-height:100vh;overflow-x:hidden}
+    header{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:20px 36px;background:rgba(255,255,255,0.05);
+      backdrop-filter:blur(8px);position:sticky;top:0;z-index:50
+    }
     .brand{display:flex;align-items:center;gap:14px}
-    .logo{width:72px;height:72px;border-radius:12px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px}
-    .title{line-height:1}
+    .logo{
+      width:60px;height:60px;border-radius:14px;
+      background:var(--accent);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:22px;box-shadow:0 0 20px rgba(252,46,32,0.4)
+    }
     .title h1{margin:0;font-size:20px}
-    .title p{margin:0;font-size:12px;opacity:0.9}
-
-    /* Hero */
-    .hero{background:rgba(255,255,255,0.05);border-radius:16px;padding:18px;margin-bottom:22px;display:flex;gap:18px;align-items:center}
-    .hero .left{flex:1}
-    .hero .right{width:220px;text-align:right}
-    .badge{background:rgba(255,255,255,0.15);display:inline-block;padding:6px 10px;border-radius:999px;font-weight:600}
-    .cta{margin-top:12px;display:inline-block;background:var(--accent);color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none}
-
-    /* Filters row */
-    .controls{display:flex;gap:12px;align-items:center;margin:18px 0}
-    .controls input, .controls select{padding:10px 12px;border-radius:10px;border:0;background:rgba(255,255,255,0.08);color:var(--white)}
-
-    /* Cards grid */
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,0.05), rgba(255,255,255,0.02));padding:14px;border-radius:12px;box-shadow:var(--card-shadow);display:flex;gap:12px;align-items:center}
-    .thumb{width:84px;height:84px;border-radius:10px;background:var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;text-align:center;font-size:12px;line-height:1.2}
-    .meta{flex:1}
-    .meta h3{margin:0;font-size:16px}
-    .meta p{margin:6px 0 0 0;font-size:13px;color:rgba(255,255,255,0.8)}
-    .ticket{align-self:flex-start;background:rgba(255,255,255,0.08);padding:8px 10px;border-radius:10px;font-weight:700}
-    .watch-btn{display:inline-block;margin-top:10px;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit}
-
-    /* Viewer */
-    .viewer-container{display:none;margin-top:24px}
-    .viewer{padding:18px;background:rgba(255,255,255,0.05);border-radius:12px}
-    .player{position:relative;padding-top:56.25%;border-radius:10px;overflow:hidden;background:#000}
+    .title p{margin:0;font-size:12px;opacity:.8}
+    .hero{
+      padding:60px 20px;text-align:center;
+      background:radial-gradient(circle at 50% 10%,rgba(252,46,32,0.3),transparent 60%);
+      margin-bottom:24px;
+    }
+    .hero h2{font-size:36px;font-weight:700;margin-bottom:8px}
+    .hero p{opacity:.85}
+    .controls{
+      display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:30px 0 10px
+    }
+    .controls input,.controls select,.controls button{
+      padding:12px 16px;border-radius:10px;border:0;color:#fff;
+      background:rgba(255,255,255,0.08);
+      transition:all .2s ease;
+    }
+    .controls button:hover{background:var(--accent);cursor:pointer}
+    .section-title{margin:10px 0 10px 36px;font-size:18px;font-weight:700}
+    /* Netflix-style carousel */
+    .carousel{display:flex;overflow-x:auto;scroll-behavior:smooth;gap:18px;padding:10px 36px}
+    .carousel::-webkit-scrollbar{display:none}
+    .card{
+      background:var(--card-bg);border-radius:14px;flex:0 0 220px;
+      cursor:pointer;transition:transform .25s,box-shadow .25s;
+      box-shadow:0 4px 20px rgba(0,0,0,.4);overflow:hidden;position:relative
+    }
+    .card:hover{transform:scale(1.1);box-shadow:0 8px 30px rgba(0,0,0,.7);z-index:3}
+    .thumb img{width:100%;height:130px;object-fit:cover;display:block}
+    .card-info{padding:12px}
+    .card-info h3{margin:0;font-size:15px;font-weight:600}
+    .card-info p{margin:6px 0 0;font-size:12px;color:rgba(255,255,255,0.7)}
+    /* Expanded view (modal) */
+    .expanded{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.8);backdrop-filter:blur(12px);
+      z-index:999;display:flex;align-items:center;justify-content:center;
+      animation:fadeIn .3s ease-in-out
+    }
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .expanded-content{
+      max-width:900px;width:90%;background:rgba(18,18,18,0.95);
+      border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,0.6);
+      padding:24px;position:relative;overflow:hidden
+    }
+    .expanded .close{
+      position:absolute;top:12px;right:16px;background:rgba(255,255,255,0.1);
+      border:0;color:#fff;border-radius:50%;width:36px;height:36px;
+      font-size:18px;cursor:pointer;transition:background .2s
+    }
+    .expanded .close:hover{background:rgba(255,255,255,0.25)}
+    .expanded h2{margin-top:0;font-size:22px;font-weight:700}
+    .ai-desc{
+      margin:10px 0 16px;font-size:14px;
+      color:rgba(255,255,255,0.85);line-height:1.6
+    }
+    .player{
+      position:relative;padding-top:56.25%;
+      border-radius:12px;overflow:hidden;background:#000;margin-bottom:16px
+    }
     .player iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
-    .match-head{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:12px}
-    .teams{display:flex;gap:12px;align-items:center}
-    .team{background:rgba(255,255,255,0.05);padding:8px 12px;border-radius:8px}
-    .back{display:inline-block;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.1);cursor:pointer}
-
-    /* Twitch Chat */
-    .twitch-chat{display:none;margin-top:16px}
-    .twitch-chat.active{display:block}
-    .chat-toggle{display:inline-block;margin-top:10px;padding:6px 10px;border-radius:6px;background:rgba(255,255,255,0.15);color:var(--white);font-weight:600;cursor:pointer;font-size:12px;border:none;font-family:inherit}
-
-    /* Footer */
-    footer{margin:34px 0 60px;color:rgba(255,255,255,0.6);font-size:13px;text-align:center}
-
-    /* Loading animation */
-    .loading{display:inline-block;width:20px;height:20px;border:3px solid rgba(255,255,255,.3);border-radius:50%;border-top-color:#fff;animation:spin 1s ease-in-out infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    /* small */
-    @media(max-width:640px){.hero{flex-direction:column;align-items:flex-start}.hero .right{text-align:left;width:100%}}
-    @media(min-width:1024px){
-      .viewer-container.active{display:flex;gap:16px}
-      .viewer{flex:3}
-      .twitch-chat{flex:1;min-width:300px}
+    .match-details{font-size:14px;opacity:0.85;margin-top:6px}
+    .chat-toggle{
+      display:inline-block;margin-top:12px;padding:8px 14px;
+      border-radius:8px;background:var(--accent);color:#fff;
+      font-weight:600;cursor:pointer;font-size:13px;border:none;font-family:inherit
+    }
+    .chat-frame{
+      margin-top:14px;border-radius:10px;overflow:hidden;
+      height:400px;display:none
+    }
+    footer{
+      text-align:center;color:rgba(255,255,255,0.6);
+      padding:40px 0;margin-top:40px
+    }
+    @media(max-width:700px){
+      .hero h2{font-size:26px}
+      .card{flex:0 0 160px}
+      .thumb img{height:100px}
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo">SW</div>
-        <div class="title">
-          <h1>Sportwave — Live Streams</h1>
-          <p>VRFS • Fixtures • Match Viewer</p>
-        </div>
+  <header>
+    <div class="brand">
+      <div class="logo">SW</div>
+      <div class="title">
+        <h1>Sportwave — Live Streams</h1>
+        <p>VRFS • Fixtures • Match Viewer</p>
       </div>
-      <div>
-        <div style="text-align:right"><strong>Sportwave</strong><br><small>Community stream hub</small></div>
-      </div>
-    </header>
-
-    <section class="hero">
-      <div class="left">
-        <div class="badge">Live VRFS Streams</div>
-        <h2 style="margin:8px 0 0 0">Catch every match live</h2>
-        <p style="margin:6px 0 0 0;opacity:0.9">Select a fixture below and click "Watch Live".</p>
-        <a class="cta" href="#streams">View Live Streams</a>
-      </div>
-      <div class="right">
-        <div style="font-size:12px;opacity:0.9">Next match</div>
-        <div style="font-weight:700;margin-top:6px" id="nextMatch">— Loading —</div>
-      </div>
-    </section>
-
-    <div class="controls">
-      <input id="search" placeholder="Search teams or competition" />
-      <select id="filterDate"><option value="all">All dates</option></select>
-      <button id="refresh" class="back">Refresh</button>
     </div>
+    <div style="text-align:right"><strong>Sportwave</strong><br><small>Community stream hub</small></div>
+  </header>
 
-    <main>
-      <section id="streams">
-        <div class="grid" id="cards"></div>
-      </section>
+  <section class="hero">
+    <h2>Catch Every Match Live</h2>
+    <p>Scroll through fixtures and click a match to stream instantly.</p>
+  </section>
 
-      <section id="viewer-container" class="viewer-container">
-        <section id="viewer" class="viewer">
-          <div class="player" id="playerWrap"></div>
-          <div class="match-head">
-            <div class="teams" id="matchInfo"></div>
-            <div>
-              <span class="back" id="closeViewer">Close</span>
-              <span class="chat-toggle" id="toggleChat" style="display:none">Show Chat</span>
-            </div>
-          </div>
-        </section>
-
-        <section id="twitch-chat" class="twitch-chat">
-          <div class="player" id="chatWrap"></div>
-        </section>
-      </section>
-    </main>
-
-    <footer>
-      Sportwave • Live VRFS Streams
-    </footer>
+  <div class="controls">
+    <input id="search" placeholder="Search teams or competition" />
+    <select id="filterDate"><option value="all">All dates</option></select>
+    <button id="refresh">Refresh</button>
   </div>
 
+  <h3 class="section-title">Live VRFS Fixtures</h3>
+  <div class="carousel" id="cards"></div>
+
+  <footer>Sportwave • Live VRFS Streams</footer>
+
   <script>
-    /***** Setup *****/
-    const SHEET_KEY = '2PACX-1vRxBCDipb1G3U7YmglB01b35zs6sHFspQhE2FYHzaUctuqvdZVMbNZTAY3kYoguMOZaKUsVhSly1K-J'; // your sheet key
-    const SHEET_NAME = 'Sheet1';
-
-    const cardsEl = document.getElementById('cards');
-    const searchEl = document.getElementById('search');
-    const filterDateEl = document.getElementById('filterDate');
-    const refreshBtn = document.getElementById('refresh');
-    const nextMatchEl = document.getElementById('nextMatch');
-    const viewerContainer = document.getElementById('viewer-container');
-    const toggleChatBtn = document.getElementById('toggleChat');
-    const twitchChat = document.getElementById('twitch-chat');
-    const closeViewerBtn = document.getElementById('closeViewer');
-
-    // Twitch helpers
-    function isTwitchUrl(url) {
-      return url && url.includes('twitch.tv');
-    }
-    function getTwitchChannel(url) {
-      const matches = url.match(/(?:www\.|go\.)?twitch\.tv\/([^\/]+)/);
-      return matches && matches[1] ? matches[1] : null;
-    }
-    function getTwitchEmbedUrl(channel) {
-      return `https://player.twitch.tv/?channel=${channel}&parent=${window.location.hostname}&autoplay=true`;
-    }
-    function getTwitchChatUrl(channel) {
-      return `https://www.twitch.tv/embed/${channel}/chat?parent=${window.location.hostname}&darkpopout`;
-    }
+    const SHEET_KEY='2PACX-1vRxBCDipb1G3U7YmglB01b35zs6sHFspQhE2FYHzaUctuqvdZVMbNZTAY3kYoguMOZaKUsVhSly1K-J';
+    const cardsEl=document.getElementById('cards');
+    const searchEl=document.getElementById('search');
+    const filterDateEl=document.getElementById('filterDate');
+    const refreshBtn=document.getElementById('refresh');
 
     async function loadSheet(){
-      if(!SHEET_KEY){
-        cardsEl.innerHTML = '<div style="grid-column:1/-1;color:#ffd;">Please set your Google Sheet key.</div>';
-        return;
-      }
-      cardsEl.innerHTML = '<div style="grid-column:1/-1;opacity:0.8;text-align:center;padding:20px"><span class="loading"></span> Loading fixtures...</div>';
-      nextMatchEl.innerHTML = '<span class="loading"></span> Loading...';
-
-      try {
-        const url = `https://docs.google.com/spreadsheets/d/e/${SHEET_KEY}/pub?output=csv`;
-        const res = await fetch(url);
-        if(!res.ok) throw new Error('Fetch failed');
-        const text = await res.text();
-        const rows = text.split(/\r?\n/).map(r => r.split(','));
-        const headers = rows.shift();
-        const data = rows.map(r => Object.fromEntries(r.map((c,i)=>[headers[i],c])));
-        showData(data);
-      } catch(err){
-        cardsEl.innerHTML = '<div style="grid-column:1/-1;color:#f99;">Error loading sheet: '+err+'</div>';
-        nextMatchEl.textContent = '— Error loading data —';
+      cardsEl.innerHTML='<div style="color:#fff;opacity:.7;text-align:center;width:100%">Loading fixtures...</div>';
+      try{
+        const res=await fetch(`https://docs.google.com/spreadsheets/d/e/${SHEET_KEY}/pub?output=csv`);
+        const text=await res.text();
+        const rows=text.split(/\r?\n/).map(r=>r.split(','));
+        const headers=rows.shift();
+        const data=rows.map(r=>Object.fromEntries(r.map((c,i)=>[headers[i],c])));
+        window.SportwaveFixtures=data.map(r=>({
+          date:r['Date']||'',
+          time:r['Time']||'',
+          match:r['Match']||'',
+          teams:r['Teams']||'',
+          link:r['Stream Link']||'',
+          thumb:r['Thumbnail']||''
+        }));
+        populateDateFilter(window.SportwaveFixtures);
+        renderFixtures(window.SportwaveFixtures);
+      }catch(err){
+        cardsEl.innerHTML='<div style="color:#f99">Error loading fixtures.</div>';
       }
     }
 
-    function showData(data){
-      window.SportwaveFixtures = data.map(r => ({
-        date: r['Date']||'',
-        time: r['Time']||'',
-        match: r['Match']||'',
-        teams: r['Teams']||'',
-        link: r['Stream Link']||'',
-        thumb: r['Thumbnail']||''
-      }));
-      renderFixtures(window.SportwaveFixtures);
-      populateDateFilter(window.SportwaveFixtures);
-      setHeroNext(window.SportwaveFixtures);
+    function populateDateFilter(fixtures){
+      const dates=[...new Set(fixtures.map(f=>f.date))].filter(Boolean);
+      filterDateEl.innerHTML='<option value="all">All dates</option>'+dates.map(d=>`<option value="${d}">${d}</option>`).join('');
     }
 
     function renderFixtures(fixtures){
-      const q = searchEl.value.trim().toLowerCase();
-      const dateFilter = filterDateEl.value;
-      const filtered = fixtures.filter(f => {
-        if(dateFilter !== 'all' && f.date !== dateFilter) return false;
-        if(!q) return true;
-        return (f.teams + ' ' + f.match).toLowerCase().includes(q);
+      const q=searchEl.value.trim().toLowerCase();
+      const dateFilter=filterDateEl.value;
+      const filtered=fixtures.filter(f=>{
+        if(dateFilter!=='all'&&f.date!==dateFilter)return false;
+        if(!q)return true;
+        return(f.teams+' '+f.match).toLowerCase().includes(q);
       });
-
-      if(filtered.length === 0){
-        cardsEl.innerHTML = '<div style="grid-column:1/-1;opacity:0.8;text-align:center;padding:20px">No fixtures found.</div>';
-        return;
-      }
-
-      cardsEl.innerHTML = filtered.map((f,i)=>{
-        const thumbHtml = f.thumb ? 
-          `<img src="${f.thumb}" style="width:100%;height:100%;object-fit:cover;border-radius:8px"/>` : 
-          '<div>Match<br>Live</div>';
-        return `
-          <article class="card">
-            <div class="thumb">${thumbHtml}</div>
-            <div class="meta">
-              <h3>${escapeHtml(f.teams)}</h3>
-              <p>${escapeHtml(f.date)} • ${escapeHtml(f.time)} • ${escapeHtml(f.match)}</p>
-              <a class="watch-btn" href="#" data-index="${i}">Watch Live</a>
-            </div>
-            <div class="ticket">${escapeHtml(f.time)}</div>
-          </article>
-        `;
-      }).join('');
-
-      document.querySelectorAll('.watch-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const index = btn.getAttribute('data-index');
-          openViewer(index);
-        });
-      });
+      if(filtered.length===0){cardsEl.innerHTML='<div style="opacity:.8">No fixtures found.</div>';return;}
+      cardsEl.innerHTML=filtered.map((f,i)=>`
+        <div class="card" data-index="${i}">
+          <div class="thumb">${f.thumb?`<img src="${f.thumb}" alt="">`:'<div style="height:130px;background:#333"></div>'}</div>
+          <div class="card-info">
+            <h3>${escapeHtml(f.teams)}</h3>
+            <p>${escapeHtml(f.date)} • ${escapeHtml(f.time)}</p>
+          </div>
+        </div>
+      `).join('');
+      document.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>openExpanded(c.dataset.index)));
     }
 
-    function openViewer(index) {
-      const fixture = window.SportwaveFixtures[index];
-      const link = fixture.link;
-      
-      viewerContainer.style.display = 'block';
-      viewerContainer.classList.add('active');
-      
-      twitchChat.classList.remove('active');
-      toggleChatBtn.textContent = 'Show Chat';
-      toggleChatBtn.style.display = 'none';
-
-      const playerWrap = document.getElementById('playerWrap');
-      const chatWrap = document.getElementById('chatWrap');
-      const matchInfo = document.getElementById('matchInfo');
-      
-      playerWrap.innerHTML = '';
-      chatWrap.innerHTML = '';
-      
-      if (!link) {
-        playerWrap.innerHTML = '<div style="padding:20px;color:#fff;text-align:center">Stream link missing for this fixture.</div>';
-      } else if (isTwitchUrl(link)) {
-        const channel = getTwitchChannel(link);
-        if (channel) {
-          const embedUrl = getTwitchEmbedUrl(channel);
-          const chatUrl = getTwitchChatUrl(channel);
-          
-          playerWrap.innerHTML = `<iframe src="${embedUrl}" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups"></iframe>`;
-          chatWrap.innerHTML = `<iframe src="${chatUrl}" height="500" frameborder="0" scrolling="no"></iframe>`;
-          
-          toggleChatBtn.style.display = 'inline-block';
-        } else {
-          playerWrap.innerHTML = '<div style="padding:20px;color:#fff;text-align:center">Invalid Twitch URL format.</div>';
-        }
-      } else {
-        playerWrap.innerHTML = `<iframe src="${link}" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups"></iframe>`;
+    function openExpanded(index){
+      const f=window.SportwaveFixtures[index];
+      const aiDescription=generateAIDescription(f);
+      const expanded=document.createElement('div');
+      expanded.className='expanded';
+      expanded.innerHTML=`
+        <div class="expanded-content">
+          <button class="close">×</button>
+          <h2>${escapeHtml(f.teams)}</h2>
+          <p class="ai-desc">${aiDescription}</p>
+          <div class="player">
+            ${f.link?`<iframe src="${getEmbedUrl(f.link)}" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups"></iframe>`:'<div style="text-align:center;padding:30px;color:#fff">No stream link</div>'}
+          </div>
+          <div class="match-details">${escapeHtml(f.match)} • ${escapeHtml(f.date)} • ${escapeHtml(f.time)}</div>
+          ${isTwitchUrl(f.link)?'<button class="chat-toggle" id="toggleChat">Show Chat</button><div class="chat-frame" id="chatFrame"><iframe src="'+getTwitchChatUrl(getTwitchChannel(f.link))+'" width="100%" height="100%"></iframe></div>':''}
+        </div>
+      `;
+      document.body.appendChild(expanded);
+      expanded.querySelector('.close').onclick=()=>expanded.remove();
+      const toggleChat=expanded.querySelector('#toggleChat');
+      if(toggleChat){
+        toggleChat.onclick=()=>{
+          const frame=expanded.querySelector('#chatFrame');
+          const visible=frame.style.display==='block';
+          frame.style.display=visible?'none':'block';
+          toggleChat.textContent=visible?'Show Chat':'Hide Chat';
+        };
       }
-
-      if (fixture) {
-        matchInfo.innerHTML = `
-          <div class="team">${escapeHtml(fixture.teams.split(' vs ')[0] || fixture.teams)}</div>
-          <div>vs</div>
-          <div class="team">${escapeHtml(fixture.teams.split(' vs ')[1] || 'TBA')}</div>
-          <div style="margin-left:12px">${escapeHtml(fixture.match)} • ${escapeHtml(fixture.date)}</div>
-        `;
-      } else {
-        matchInfo.innerHTML = `<div style="font-weight:700">Live Stream</div>`;
-      }
-      
-      window.scrollTo({top: viewerContainer.offsetTop - 20, behavior: 'smooth'});
     }
 
-    toggleChatBtn.addEventListener('click', () => {
-      twitchChat.classList.toggle('active');
-      toggleChatBtn.textContent = twitchChat.classList.contains('active') ? 'Hide Chat' : 'Show Chat';
-    });
-
-    closeViewerBtn.addEventListener('click', () => {
-      viewerContainer.style.display = 'none';
-      viewerContainer.classList.remove('active');
-      document.getElementById('playerWrap').innerHTML = '';
-      document.getElementById('chatWrap').innerHTML = '';
-    });
-
-    function populateDateFilter(fixtures){
-      const dates = [...new Set(fixtures.map(f=>f.date))].filter(Boolean);
-      filterDateEl.innerHTML = '<option value="all">All dates</option>' + 
-        dates.map(d => `<option value="${d}">${d}</option>`).join('');
+    // AI Description logic
+    function generateAIDescription(fixture){
+      const teams=fixture.teams||'Two teams';
+      const matchName=fixture.match||'a thrilling fixture';
+      const date=fixture.date||'an upcoming day';
+      const parts=teams.split(' vs ');
+      const teamA=parts[0]||'Team A';
+      const teamB=parts[1]||'Team B';
+      const templates=[
+        `${teamA} face off against ${teamB} in ${matchName}, a matchup expected to deliver intensity, skill, and pure VRFS drama.`,
+        `A gripping showdown between ${teamA} and ${teamB}. With both sides in fine form, this ${matchName} could define their ${date} campaign.`,
+        `${matchName} brings together ${teamA} and ${teamB} — expect high pace, bold tactics, and a crowd on edge.`,
+        `Under the virtual floodlights, ${teamA} take on ${teamB} in what promises to be one of the most exciting matches of ${date}.`,
+        `All eyes on ${teamA} vs ${teamB}. Expect goals, tension, and top-tier VRFS action in ${matchName}.`
+      ];
+      return templates[Math.floor(Math.random()*templates.length)];
     }
 
-    searchEl.addEventListener('input', () => renderFixtures(window.SportwaveFixtures || []));
-    filterDateEl.addEventListener('change', () => renderFixtures(window.SportwaveFixtures || []));
-    refreshBtn.addEventListener('click', loadSheet);
-
-    function setHeroNext(fixtures){
-      if(!fixtures || fixtures.length === 0) {
-        nextMatchEl.textContent = '— No fixtures —';
-        return;
+    function getEmbedUrl(link){
+      if(isTwitchUrl(link)){
+        const c=getTwitchChannel(link);
+        return `https://player.twitch.tv/?channel=${c}&parent=${window.location.hostname}&autoplay=true`;
       }
-      
-      let nextMatch = fixtures[0];
-      for (const fixture of fixtures) {
-        if (fixture.date) {
-          nextMatch = fixture;
-          break;
-        }
-      }
-      
-      nextMatchEl.textContent = nextMatch ? `${nextMatch.teams} • ${nextMatch.time}` : '— No upcoming fixtures —';
+      return link;
     }
+    function isTwitchUrl(url){return url&&url.includes('twitch.tv')}
+    function getTwitchChannel(url){const m=url.match(/(?:www\.|go\.)?twitch\.tv\/([^\/]+)/);return m&&m[1]?m[1]:null}
+    function getTwitchChatUrl(channel){return `https://www.twitch.tv/embed/${channel}/chat?parent=${window.location.hostname}&darkpopout`}
+    function escapeHtml(s){return s?String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m])):''}
 
-    function escapeHtml(s){
-      if(!s) return '';
-      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    }
-
-    // Start
+    searchEl.addEventListener('input',()=>renderFixtures(window.SportwaveFixtures||[]));
+    filterDateEl.addEventListener('change',()=>renderFixtures(window.SportwaveFixtures||[]));
+    refreshBtn.addEventListener('click',loadSheet);
     loadSheet();
   </script>
 </body>
