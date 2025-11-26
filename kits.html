@@ -1,0 +1,235 @@
+<!--
+vrfs-kits.html
+A single-file HTML page that:
+ - Reads VRFS kits from a Google Sheet (no API key required) using the "gviz/tq?tqx=out:json" endpoint.
+ - Displays kit cards (image, club name, kit code, uploader, notes).
+ - Lets visitors copy kit codes and preview images.
+ - Includes an upload form that POSTS to a Google Apps Script Web App endpoint (you must create & deploy the script — instructions below).
+
+HOW TO SET UP (quick):
+ 1) Create a Google Sheet with columns (A)timestamp, (B)club, (C)kit_code, (D)image_url, (E)uploader, (F)notes
+    Put headers in row 1 exactly as above (timestamp will be auto-filled by Apps Script)
+ 2) Get your sheet ID from the sheet URL: https://docs.google.com/spreadsheets/d/<SHEET_ID>/edit
+ 3) Option A (read-only view without API key): Publish the sheet or keep it private but public 'csv' will still work with the gviz endpoint.
+    We'll fetch: https://docs.google.com/spreadsheets/d/<SHEET_ID>/gviz/tq?tqx=out:json&sheet=Sheet1
+ 4) Create a Google Apps Script (https://script.google.com) bound to the sheet or standalone with code shown at the bottom of this file. Deploy it as a Web App (execute as: Me, Who has access: Anyone) to get a POST endpoint URL.
+ 5) Replace SHEET_ID and GAS_WEB_APP_URL in the script section below with your values.
+
+SECURITY NOTES:
+ - The public Apps Script publish "Anyone, even anonymous" allows anyone to POST — if you want to restrict uploads, require a secret token and check it in Apps Script.
+ - Do not expose sensitive credentials in the client page.
+
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>VRFS Kits — Sportwave</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#ff3366}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,#071025 0%, #081428 100%);color:#e6eef6;margin:0;padding:24px}
+    .container{max-width:1100px;margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    h1{font-size:22px;margin:0}
+    .search{display:flex;gap:8px}
+    input[type=text]{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+    button{padding:10px 14px;border-radius:10px;border:0;background:var(--accent);color:white;cursor:pointer}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+    .kit-img{width:100%;height:140px;object-fit:cover;border-radius:8px;background:#071428}
+    .meta{margin-top:8px}
+    .club{font-weight:600}
+    .code{font-family:monospace;background:rgba(255,255,255,0.03);padding:6px;border-radius:6px;display:inline-block;margin-top:6px}
+    .small{font-size:13px;color:var(--muted)}
+    .actions{display:flex;gap:8px;margin-top:8px}
+    .upload-box{margin-top:22px;padding:14px;border-radius:12px;background:rgba(255,255,255,0.02)}
+    label{display:block;margin-top:8px;font-size:13px;color:var(--muted)}
+    textarea,input[type=url],input[type=text]{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    .notice{font-size:13px;color:var(--muted);margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>VRFS Kits — Submit & Browse Codes</h1>
+      <div class="search">
+        <input id="q" type="text" placeholder="Search club, uploader or code..." />
+        <button id="refreshBtn">Refresh</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="kitsSection">
+        <div class="grid" id="kitsGrid"></div>
+      </section>
+
+      <section class="upload-box">
+        <h2 style="margin:0 0 8px 0">Upload a Kit Code</h2>
+        <div class="notice">Your submission will be appended to the Google Sheet and appear after refresh.</div>
+        <form id="uploadForm">
+          <label>Club name</label>
+          <input name="club" required type="text" />
+
+          <label>Kit code (the code people use in-game)</label>
+          <input name="kit_code" required type="text" />
+
+          <label>Image URL (optional) — if left blank a placeholder will be used</label>
+          <input name="image_url" type="url" />
+
+          <label>Your name (uploader)</label>
+          <input name="uploader" type="text" />
+
+          <label>Notes (optional)</label>
+          <textarea name="notes" rows="2"></textarea>
+
+          <div style="margin-top:10px;display:flex;gap:8px">
+            <button type="submit">Upload</button>
+            <button type="button" id="clearBtn">Clear</button>
+          </div>
+        </form>
+        <div id="uploadStatus" class="small" style="margin-top:8px"></div>
+      </section>
+
+    </main>
+  </div>
+
+<script>
+// CONFIG — replace these with your values
+const SHEET_ID = '1AWR1tYeOfjIiYfjrE_vMdS286aW9aLXDRecQcKuCfgs'; // e.g. '1A2b3C4d...'
+const GAS_POST_URL = 'https://script.google.com/macros/s/AKfycbz4rWmskyt9lRohhUCFK4NREs1l9lxxr7BYm6ctXm2hTrv8omFmYmoxR4FtVEQWkM9oPQ/exec'; // e.g. 'https://script.google.com/macros/s/AKfy.../exec'
+const SHEET_NAME = 'Sheet1';
+
+// Internal
+const kitsGrid = document.getElementById('kitsGrid');
+const qInput = document.getElementById('q');
+const refreshBtn = document.getElementById('refreshBtn');
+
+// Helper: fetch sheet via gviz JSON (no API key needed)
+async function fetchKits(){
+  const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRHLmtXKSpBJQ6r839R4ZToiFsb6nyaqhhHWV543DyS9PUaiRRgwBRlPSDiMbjGmvGdAg7ND2Gnn6_n/pub?output=csv';
+  const r = await fetch(csvUrl);
+  const text = await r.text();
+  const lines = text.trim().split(/
+?
+/);
+  const header = lines[0].split(',');
+  const items = lines.slice(1).map(line => {
+    const cols = line.split(',');
+    return {
+      timestamp: cols[0] || '',
+      club: cols[1] || '',
+      kit_code: cols[2] || '',
+      image_url: cols[3] || '',
+      uploader: cols[4] || '',
+      notes: cols[5] || ''
+    };
+  });
+  return items;
+}
+
+function renderKits(items){
+  kitsGrid.innerHTML = '';
+  if(!items.length){kitsGrid.innerHTML = '<div class="small">No kits found.</div>';return}
+  items.forEach(it=>{
+    const div = document.createElement('div'); div.className='card';
+    const img = document.createElement('img'); img.className='kit-img';
+    img.src = it.image_url || `https://via.placeholder.com/640x360.png?text=${encodeURIComponent(it.club||'KIT')}`;
+    img.alt = it.club || 'kit image';
+    const meta = document.createElement('div'); meta.className='meta';
+    meta.innerHTML = `<div class="club">${escapeHtml(it.club||'Unknown Club')}</div>
+                      <div class="small">Uploaded by ${escapeHtml(it.uploader||'anonymous')}</div>
+                      <div class="code">${escapeHtml(it.kit_code||'—')}</div>
+                      <div class="small">${escapeHtml(it.notes||'')}</div>`;
+    const actions = document.createElement('div'); actions.className='actions';
+    const copyBtn = document.createElement('button'); copyBtn.type='button'; copyBtn.textContent='Copy code';
+    copyBtn.onclick = ()=>{navigator.clipboard.writeText(it.kit_code||'').then(()=>{copyBtn.textContent='Copied!';setTimeout(()=>copyBtn.textContent='Copy code',1200)})}
+    const previewBtn = document.createElement('button'); previewBtn.type='button'; previewBtn.textContent='Open image';
+    previewBtn.onclick = ()=>window.open(it.image_url || img.src,'_blank');
+    actions.appendChild(copyBtn); actions.appendChild(previewBtn);
+
+    div.appendChild(img); div.appendChild(meta); div.appendChild(actions);
+    kitsGrid.appendChild(div);
+  })
+}
+
+function escapeHtml(s){ return (s||'').toString().replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+async function loadAndRender(){
+  try{
+    kitsGrid.innerHTML = '<div class="small">Loading...</div>';
+    const items = await fetchKits();
+    const q = qInput.value.trim().toLowerCase();
+    const filtered = items.filter(it => {
+      if(!q) return true;
+      return (it.club||'').toLowerCase().includes(q) || (it.kit_code||'').toLowerCase().includes(q) || (it.uploader||'').toLowerCase().includes(q) || (it.notes||'').toLowerCase().includes(q);
+    });
+    renderKits(filtered.reverse()); // newest last row shown first
+  }catch(e){
+    kitsGrid.innerHTML = `<div class="small">Failed to load sheet. Make sure SHEET_ID and SHEET_NAME are correct and the sheet is shared/viewable. Error: ${e.message}</div>`;
+    console.error(e);
+  }
+}
+
+qInput.addEventListener('input', ()=>loadAndRender());
+refreshBtn.addEventListener('click', ()=>loadAndRender());
+
+// Upload form handling — posts to your Google Apps Script endpoint (must be deployed)
+const uploadForm = document.getElementById('uploadForm');
+const uploadStatus = document.getElementById('uploadStatus');
+const clearBtn = document.getElementById('clearBtn');
+clearBtn.addEventListener('click', ()=>uploadForm.reset());
+uploadForm.addEventListener('submit', async (ev)=>{
+  ev.preventDefault();
+  const formData = new FormData(uploadForm);
+  const payload = {};
+  formData.forEach((v,k)=>payload[k]=v);
+  uploadStatus.textContent = 'Sending...';
+  try{
+    if(!GAS_POST_URL || GAS_POST_URL.includes('<YOUR')){
+      uploadStatus.textContent = 'Upload endpoint not configured. See instructions in the HTML file.'; return;
+    }
+    const r = await fetch(GAS_POST_URL, {method:'POST',headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+    const data = await r.json();
+    if(data.result === 'success'){
+      uploadStatus.textContent = 'Uploaded! It will appear after refresh.';
+      uploadForm.reset();
+      loadAndRender();
+    } else {
+      uploadStatus.textContent = 'Upload failed: '+(data.error||JSON.stringify(data));
+    }
+  }catch(e){
+    uploadStatus.textContent = 'Upload error: '+e.message;
+    console.error(e);
+  }
+});
+
+// INITIAL
+loadAndRender();
+</script>
+
+<!--
+GOOGLE APPS SCRIPT (paste into script.google.com and Deploy -> New deployment -> Web app)
+Replace SHEET_ID and SHEET_NAME in the script if needed.
+Set "Who has access" to "Anyone" (or "Anyone with link") if you want anonymous uploads.
+
+----- Apps Script code (JavaScript) -----
+function doPost(e){
+  try{
+    var body = e.postData ? JSON.parse(e.postData.contents) : e.parameter;
+    var ss = SpreadsheetApp.openById('<YOUR_SHEET_ID_HERE>');
+    var sheet = ss.getSheetByName('Sheet1');
+    // optionally validate body.club and body.kit_code
+    var row = [new Date(), body.club||'', body.kit_code||'', body.image_url||'', body.uploader||'', body.notes||''];
+    sheet.appendRow(row);
+    return ContentService.createTextOutput(JSON.stringify({result:'success'})).setMimeType(ContentService.MimeType.JSON);
+  }catch(err){
+    return ContentService.createTextOutput(JSON.stringify({result:'error', error:err.message})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+-----------------------------------------
+-->
+</body>
+</html>
